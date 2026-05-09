@@ -1,0 +1,1047 @@
+<!-- 
+    Roll20 Character Sheet: D&D 2024 with Final Fantasy Mechanics
+    LOCAL DEV NOTE: The <link> tag below is for local preview only.
+    Roll20 ignores it automatically. Do NOT add <html>, <head>, or <body> tags.
+-->
+<!-- Roll20 ignores meta tags; charset handled by the platform -->
+<link rel="stylesheet" type="text/css" href="boilerplate_sheet.css">
+
+<div class="sheet-main-container">
+
+    <!-- ================================================ -->
+    <!-- CHARACTER HEADER                                 -->
+    <!-- ================================================ -->
+    <div class="sheet-header">
+        <h1>Character Sheet</h1>
+        <div class="sheet-header-details">
+            <div class="sheet-input-group">
+                <label>Character Name</label>
+                <input type="text" name="attr_character_name" placeholder="Name">
+            </div>
+            <div class="sheet-input-group">
+                <label>Class</label>
+                <input type="text" name="attr_class" placeholder="e.g. Fighter">
+            </div>
+            <div class="sheet-input-group" style="width: 60px; position: relative;">
+                <label>Level</label>
+                <input type="number" name="attr_level" value="1">
+                <!-- Checkbox toggle for level up indicator (uses :checked CSS) -->
+                <input type="checkbox" name="attr_level_up_alert" class="sheet-level-up-toggle" value="1">
+                <div class="sheet-level-up-indicator">LEVEL UP!</div>
+            </div>
+            <div class="sheet-input-group">
+                <label>Race/Species</label>
+                <input type="text" name="attr_race" placeholder="e.g. Human">
+            </div>
+            <div class="sheet-input-group">
+                <label>Alignment</label>
+                <input type="text" name="attr_alignment" placeholder="e.g. Neutral Good">
+            </div>
+            <div class="sheet-input-group" style="width: 80px;">
+                <label>XP</label>
+                <input type="number" name="attr_xp" value="0">
+            </div>
+        </div>
+    </div>
+
+    <!-- Main 3-Column Layout -->
+    <div class="sheet-body-grid">
+
+        <!-- ================================================ -->
+        <!-- COLUMN 1: Core Attributes & Skills               -->
+        <!-- ================================================ -->
+        <div class="sheet-column">
+
+            <div class="sheet-section-box">
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble" style="border-color: #c62828;">
+                        <label>Proficiency Bonus</label>
+                        <input type="number" name="attr_pb" value="2" class="sheet-pb-input" readonly>
+                    </div>
+                </div>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble">
+                        <label>Passive Perception</label>
+                        <!-- Passive perception with manual up/down adjustment arrows -->
+                        <div class="sheet-pp-controls">
+                            <button type="action" name="act_pp_down" class="sheet-pp-arrow">&#9660;</button>
+                            <input type="number" name="attr_passive_perception" value="10">
+                            <button type="action" name="act_pp_up" class="sheet-pp-arrow">&#9650;</button>
+                        </div>
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Speed</label>
+                        <input type="text" name="attr_speed" value="30 ft">
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Size</label>
+                        <input type="text" name="attr_size" value="Medium">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core D&D Ability Scores + Associated Skills -->
+            <div class="sheet-section-box">
+                <h2>Ability Scores & Skills</h2>
+
+                <!-- Strength -->
+                <div class="sheet-attribute-box">
+                    <label>Strength (STR)</label>
+                    <input type="number" name="attr_strength" value="10" class="sheet-score-input">
+                    <input type="number" name="attr_strength_mod" value="0" readonly class="sheet-mod-input">
+                    <button type="roll" name="roll_str" value="/roll 1d20 + @{strength_mod}">Roll STR</button>
+                    <!-- Saving Throw row for Strength -->
+                    <div class="sheet-save-row">
+                        <input type="checkbox" name="attr_strength_save_prof" value="1" title="Proficient in STR saves">
+                        <span class="sheet-save-label">Save</span>
+                        <input type="number" name="attr_strength_save" value="0" readonly class="sheet-save-val">
+                        <button type="roll" name="roll_str_save" value="&amp;{template:default} {{name=STR Save}} {{Roll=[[1d20 + @{strength_save}]]}}">Roll</button>
+                    </div>
+                    <div class="sheet-skills-list">
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_athletics_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_athletics_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Athletics</span>
+                            <input type="number" name="attr_athletics" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_athletics" value="/roll 1d20 + @{athletics}"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dexterity -->
+                <div class="sheet-attribute-box">
+                    <label>Dexterity (DEX)</label>
+                    <input type="number" name="attr_dexterity" value="10" class="sheet-score-input">
+                    <input type="number" name="attr_dexterity_mod" value="0" readonly class="sheet-mod-input">
+                    <button type="roll" name="roll_dex" value="/roll 1d20 + @{dexterity_mod}">Roll DEX</button>
+                    <!-- Saving Throw row for Dexterity -->
+                    <div class="sheet-save-row">
+                        <input type="checkbox" name="attr_dexterity_save_prof" value="1" title="Proficient in DEX saves">
+                        <span class="sheet-save-label">Save</span>
+                        <input type="number" name="attr_dexterity_save" value="0" readonly class="sheet-save-val">
+                        <button type="roll" name="roll_dex_save" value="&amp;{template:default} {{name=DEX Save}} {{Roll=[[1d20 + @{dexterity_save}]]}}">Roll</button>
+                    </div>
+                    <div class="sheet-skills-list">
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_acrobatics_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_acrobatics_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Acrobatics</span>
+                            <input type="number" name="attr_acrobatics" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_acrobatics" value="/roll 1d20 + @{acrobatics}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_sleight_of_hand_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_sleight_of_hand_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Sleight of Hand</span>
+                            <input type="number" name="attr_sleight_of_hand" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_sleight_of_hand" value="/roll 1d20 + @{sleight_of_hand}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_stealth_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_stealth_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Stealth</span>
+                            <input type="number" name="attr_stealth" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_stealth" value="/roll 1d20 + @{stealth}"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Constitution -->
+                <div class="sheet-attribute-box">
+                    <label>Constitution (CON)</label>
+                    <input type="number" name="attr_constitution" value="10" class="sheet-score-input">
+                    <input type="number" name="attr_constitution_mod" value="0" readonly class="sheet-mod-input">
+                    <button type="roll" name="roll_con" value="/roll 1d20 + @{constitution_mod}">Roll CON</button>
+                    <!-- Saving Throw row for Constitution -->
+                    <div class="sheet-save-row">
+                        <input type="checkbox" name="attr_constitution_save_prof" value="1" title="Proficient in CON saves">
+                        <span class="sheet-save-label">Save</span>
+                        <input type="number" name="attr_constitution_save" value="0" readonly class="sheet-save-val">
+                        <button type="roll" name="roll_con_save" value="&amp;{template:default} {{name=CON Save}} {{Roll=[[1d20 + @{constitution_save}]]}}">Roll</button>
+                    </div>
+                    <div class="sheet-skills-list">
+                    </div>
+                </div>
+
+                <!-- Intelligence -->
+                <div class="sheet-attribute-box">
+                    <label>Intelligence (INT)</label>
+                    <input type="number" name="attr_intelligence" value="10" class="sheet-score-input">
+                    <input type="number" name="attr_intelligence_mod" value="0" readonly class="sheet-mod-input">
+                    <button type="roll" name="roll_int" value="/roll 1d20 + @{intelligence_mod}">Roll INT</button>
+                    <!-- Saving Throw row for Intelligence -->
+                    <div class="sheet-save-row">
+                        <input type="checkbox" name="attr_intelligence_save_prof" value="1" title="Proficient in INT saves">
+                        <span class="sheet-save-label">Save</span>
+                        <input type="number" name="attr_intelligence_save" value="0" readonly class="sheet-save-val">
+                        <button type="roll" name="roll_int_save" value="&amp;{template:default} {{name=INT Save}} {{Roll=[[1d20 + @{intelligence_save}]]}}">Roll</button>
+                    </div>
+                    <div class="sheet-skills-list">
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_arcana_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_arcana_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Arcana</span>
+                            <input type="number" name="attr_arcana" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_arcana" value="/roll 1d20 + @{arcana}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_history_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_history_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">History</span>
+                            <input type="number" name="attr_history" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_history" value="/roll 1d20 + @{history}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_investigation_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_investigation_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Investigation</span>
+                            <input type="number" name="attr_investigation" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_investigation" value="/roll 1d20 + @{investigation}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_nature_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_nature_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Nature</span>
+                            <input type="number" name="attr_nature" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_nature" value="/roll 1d20 + @{nature}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_religion_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_religion_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Religion</span>
+                            <input type="number" name="attr_religion" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_religion" value="/roll 1d20 + @{religion}"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Wisdom -->
+                <div class="sheet-attribute-box">
+                    <label>Wisdom (WIS)</label>
+                    <input type="number" name="attr_wisdom" value="10" class="sheet-score-input">
+                    <input type="number" name="attr_wisdom_mod" value="0" readonly class="sheet-mod-input">
+                    <button type="roll" name="roll_wis" value="/roll 1d20 + @{wisdom_mod}">Roll WIS</button>
+                    <!-- Saving Throw row for Wisdom -->
+                    <div class="sheet-save-row">
+                        <input type="checkbox" name="attr_wisdom_save_prof" value="1" title="Proficient in WIS saves">
+                        <span class="sheet-save-label">Save</span>
+                        <input type="number" name="attr_wisdom_save" value="0" readonly class="sheet-save-val">
+                        <button type="roll" name="roll_wis_save" value="&amp;{template:default} {{name=WIS Save}} {{Roll=[[1d20 + @{wisdom_save}]]}}">Roll</button>
+                    </div>
+                    <div class="sheet-skills-list">
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_animal_handling_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_animal_handling_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Animal Handling</span>
+                            <input type="number" name="attr_animal_handling" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_animal_handling" value="/roll 1d20 + @{animal_handling}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_insight_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_insight_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Insight</span>
+                            <input type="number" name="attr_insight" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_insight" value="/roll 1d20 + @{insight}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_medicine_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_medicine_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Medicine</span>
+                            <input type="number" name="attr_medicine" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_medicine" value="/roll 1d20 + @{medicine}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_perception_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_perception_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Perception</span>
+                            <input type="number" name="attr_perception" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_perception" value="/roll 1d20 + @{perception}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_survival_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_survival_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Survival</span>
+                            <input type="number" name="attr_survival" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_survival" value="/roll 1d20 + @{survival}"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charisma -->
+                <div class="sheet-attribute-box">
+                    <label>Charisma (CHA)</label>
+                    <input type="number" name="attr_charisma" value="10" class="sheet-score-input">
+                    <input type="number" name="attr_charisma_mod" value="0" readonly class="sheet-mod-input">
+                    <button type="roll" name="roll_cha" value="/roll 1d20 + @{charisma_mod}">Roll CHA</button>
+                    <!-- Saving Throw row for Charisma -->
+                    <div class="sheet-save-row">
+                        <input type="checkbox" name="attr_charisma_save_prof" value="1" title="Proficient in CHA saves">
+                        <span class="sheet-save-label">Save</span>
+                        <input type="number" name="attr_charisma_save" value="0" readonly class="sheet-save-val">
+                        <button type="roll" name="roll_cha_save" value="&amp;{template:default} {{name=CHA Save}} {{Roll=[[1d20 + @{charisma_save}]]}}">Roll</button>
+                    </div>
+                    <div class="sheet-skills-list">
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_deception_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_deception_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Deception</span>
+                            <input type="number" name="attr_deception" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_deception" value="/roll 1d20 + @{deception}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_intimidation_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_intimidation_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Intimidation</span>
+                            <input type="number" name="attr_intimidation" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_intimidation" value="/roll 1d20 + @{intimidation}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_performance_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_performance_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Performance</span>
+                            <input type="number" name="attr_performance" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_performance" value="/roll 1d20 + @{performance}"></button>
+                        </div>
+                        <div class="sheet-skill-row">
+                            <input type="checkbox" name="attr_persuasion_prof" value="1" title="Proficiency">
+                            <input type="checkbox" name="attr_persuasion_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
+                            <span class="sheet-skill-name">Persuasion</span>
+                            <input type="number" name="attr_persuasion" value="0" readonly class="sheet-skill-val">
+                            <button type="roll" name="roll_persuasion" value="/roll 1d20 + @{persuasion}"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sheet-section-box">
+                <h2>Appearance</h2>
+                <textarea name="attr_appearance" placeholder="Physical description..."></textarea>
+                
+                <h2>Backstory & Personality</h2>
+                <textarea name="attr_backstory" placeholder="History, traits, ideals, bonds, flaws..."></textarea>
+            </div>
+
+        </div>
+
+        <!-- ================================================ -->
+        <!-- COLUMN 2: Combat, Traits, Equipment              -->
+        <!-- ================================================ -->
+        <div class="sheet-column">
+
+            <!-- Combat Stats: HP, AC, Initiative -->
+            <div class="sheet-section-box">
+                <h2>Combat</h2>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble" style="flex: 2;">
+                        <label>Hit Points (HP)</label>
+                        <div class="sheet-flex-center">
+                            <input type="number" name="attr_hp" value="10">
+                            <span>/</span>
+                            <input type="number" name="attr_hp_max" value="10">
+                        </div>
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Temp HP</label>
+                        <input type="number" name="attr_hp_temp" value="0">
+                    </div>
+                </div>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble sheet-stat-bubble-ac">
+                        <label>AC</label>
+                        <input type="number" name="attr_ac" value="10">
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Initiative</label>
+                        <input type="number" name="attr_initiative" value="0">
+                        <button type="roll" name="roll_init" value="/roll 1d20 + @{initiative} &amp;{tracker}">Roll</button>
+                    </div>
+                </div>
+                <div class="sheet-death-saves">
+                    <label>Death Saves</label>
+                    <div class="sheet-ds-row">
+                        <span>Successes</span>
+                        <input type="checkbox" name="attr_ds_s1" value="1">
+                        <input type="checkbox" name="attr_ds_s2" value="1">
+                        <input type="checkbox" name="attr_ds_s3" value="1">
+                    </div>
+                    <div class="sheet-ds-row">
+                        <span>Failures</span>
+                        <input type="checkbox" name="attr_ds_f1" value="1">
+                        <input type="checkbox" name="attr_ds_f2" value="1">
+                        <input type="checkbox" name="attr_ds_f3" value="1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Armor & Shields (Auto-Calculates AC) -->
+            <div class="sheet-section-box">
+                <h2>Armor & Shields</h2>
+                <fieldset class="repeating_armor">
+                    <div class="sheet-repeating-row sheet-weapon-row">
+                        <div class="sheet-flex-center" style="justify-content: flex-start; gap: 8px;">
+                            <input type="checkbox" name="attr_armor_equipped" value="1" title="Equipped" class="sheet-equip-checkbox">
+                            <input type="text" name="attr_armor_name" placeholder="Armor Name" style="flex:1;">
+                        </div>
+                        <div class="sheet-small-inputs">
+                            <label>Type 
+                                <select name="attr_armor_type" style="width: 80px;">
+                                    <option value="None">None</option>
+                                    <option value="Light">Light</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Heavy">Heavy</option>
+                                    <option value="Shield">Shield</option>
+                                </select>
+                            </label>
+                            <label>AC Val <input type="number" name="attr_armor_ac" value="0" style="width: 40px;"></label>
+                            <label>M. Slots <input type="number" name="attr_armor_materia" value="0" style="width: 40px;"></label>
+                        </div>
+                        <textarea name="attr_armor_desc" placeholder="Armor description..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Weapons Section -->
+            <div class="sheet-section-box">
+                <h2>Weapons</h2>
+                <fieldset class="repeating_weapons">
+                    <div class="sheet-repeating-row sheet-weapon-row">
+                        <input type="text" name="attr_weapon_name" placeholder="Weapon Name">
+                        <div class="sheet-small-inputs">
+                            <label>Atk Mod <input type="number" name="attr_weapon_attack" value="0"></label>
+                            <label>Damage <input type="text" name="attr_weapon_damage" placeholder="1d8+3"></label>
+                            <label>M. Slots <input type="number" name="attr_weapon_materia" value="0"></label>
+                        </div>
+                        <textarea name="attr_weapon_desc" placeholder="Weapon description/properties..."></textarea>
+                        <button type="roll" name="roll_attack" value="&amp;{template:default} {{name=@{weapon_name}}} {{Attack=[[1d20+@{weapon_attack}]]}} {{Damage=[[@{weapon_damage}]]}}">Attack</button>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Class Features -->
+            <div class="sheet-section-box">
+                <h2>Class Features</h2>
+                <fieldset class="repeating_classfeatures">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_feature_name" placeholder="Feature Name">
+                        <textarea name="attr_feature_desc" placeholder="Feature description..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Species Traits -->
+            <div class="sheet-section-box">
+                <h2>Species Traits</h2>
+                <fieldset class="repeating_speciestraits">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_trait_name" placeholder="Trait Name">
+                        <textarea name="attr_trait_desc" placeholder="Trait description..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Feats -->
+            <div class="sheet-section-box">
+                <h2>Feats</h2>
+                <fieldset class="repeating_feats">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_feat_name" placeholder="Feat Name">
+                        <textarea name="attr_feat_desc" placeholder="Feat description..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Equipment Training & Proficiencies -->
+            <div class="sheet-section-box">
+                <h2>Equipment Training & Proficiencies</h2>
+                <div class="sheet-armor-prof">
+                    <label>Armor:</label>
+                    <input type="checkbox" name="attr_prof_light" value="1"> Light
+                    <input type="checkbox" name="attr_prof_medium" value="1"> Medium
+                    <input type="checkbox" name="attr_prof_heavy" value="1"> Heavy
+                    <input type="checkbox" name="attr_prof_shield" value="1"> Shields
+                </div>
+                <div class="sheet-input-group">
+                    <label>Training / Other</label>
+                    <textarea name="attr_prof_training" placeholder="e.g. Vehicles..."></textarea>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Weapons</label>
+                    <textarea name="attr_prof_weapons" placeholder="e.g. Simple Weapons, Martial Weapons..."></textarea>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Tools</label>
+                    <textarea name="attr_prof_tools" placeholder="e.g. Thieves' Tools..."></textarea>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Languages</label>
+                    <textarea name="attr_languages" placeholder="e.g. Common, Elvish..."></textarea>
+                </div>
+            </div>
+
+            <!-- Equipment & Inventory -->
+            <div class="sheet-section-box">
+                <h2>Inventory</h2>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble sheet-stat-bubble-gold">
+                        <label>Gold (GP)</label>
+                        <input type="number" name="attr_gp" value="0">
+                    </div>
+                </div>
+                <h3 class="sheet-sub-header">Items</h3>
+                <fieldset class="repeating_inventory">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_item_name" placeholder="Item Name">
+                        <div class="sheet-small-inputs">
+                            <label>Qty <input type="number" name="attr_item_qty" value="1"></label>
+                            <label>Weight <input type="number" name="attr_item_weight" value="0"></label>
+                        </div>
+                        <textarea name="attr_item_desc" placeholder="Description..."></textarea>
+                    </div>
+                </fieldset>
+
+                <h3 class="sheet-sub-header">Magic Item Attunement</h3>
+                <div class="sheet-input-group">
+                    <label>Attuned Slots Used (Including Job Stones)</label>
+                    <input type="text" name="attr_attunement_tracker" value="0 / 3" readonly class="sheet-attunement-tracker">
+                </div>
+                <fieldset class="repeating_attunement">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_attuned_item" placeholder="Item Name">
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+
+        <!-- ================================================ -->
+        <!-- COLUMN 3: Magic, Materia, Summons, Inventory     -->
+        <!-- ================================================ -->
+        <div class="sheet-column">
+
+            <!-- Spellcasting Section -->
+            <div class="sheet-section-box sheet-theme-magic">
+                <h2>Spellcasting</h2>
+                <div class="sheet-stat-row">
+                    <div class="sheet-input-group" style="flex:1">
+                        <label>Ability</label>
+                        <select name="attr_spellcasting_ability">
+                            <option value="none">None</option>
+                            <option value="intelligence">INT</option>
+                            <option value="wisdom">WIS</option>
+                            <option value="charisma">CHA</option>
+                        </select>
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Modifier</label>
+                        <input type="number" name="attr_spell_mod" value="0" readonly>
+                    </div>
+                </div>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble">
+                        <label>Save DC</label>
+                        <input type="number" name="attr_spell_save_dc" value="8" readonly>
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Attack Bonus</label>
+                        <input type="number" name="attr_spell_attack_bonus" value="0" readonly>
+                    </div>
+                </div>
+
+                <h3 class="sheet-sub-header">Cantrips</h3>
+                <fieldset class="repeating_cantrips">
+                    <div class="sheet-repeating-row sheet-weapon-row">
+                        <input type="text" name="attr_cantrip_name" placeholder="Cantrip Name">
+                        <textarea name="attr_cantrip_effect" placeholder="Spell Effect..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Magic Points (replaces Spell Slots) -->
+            <div class="sheet-section-box sheet-theme-magic">
+                <h2>Magic Points (MP)</h2>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble">
+                        <label>Current MP</label>
+                        <input type="number" name="attr_mp_current" value="0">
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Max MP</label>
+                        <input type="number" name="attr_mp_max" value="0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Materia Section -->
+            <div class="sheet-section-box sheet-theme-materia">
+                <h2>Materia</h2>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble">
+                        <label>Slots Used</label>
+                        <input type="number" name="attr_materia_slots_used" value="0">
+                    </div>
+                    <div class="sheet-stat-bubble">
+                        <label>Slots Max (Auto)</label>
+                        <input type="number" name="attr_materia_slots_max" value="0" readonly>
+                    </div>
+                </div>
+
+                <h3 class="sheet-sub-header">Materia List</h3>
+                <fieldset class="repeating_materia">
+                    <div class="sheet-repeating-row sheet-weapon-row">
+                        <input type="text" name="attr_materia_name" placeholder="Materia Name (e.g. Fire)">
+                        <input type="text" name="attr_materia_spell" placeholder="D&amp;D Spell (e.g. Fireball)">
+                        <input type="text" name="attr_materia_source" placeholder="Source (e.g. Weapon, Armor)">
+                        <div class="sheet-small-inputs">
+                            <label>MP Cost <input type="number" name="attr_materia_mp_cost" value="0"></label>
+                            <label>Slot Cost <input type="number" name="attr_materia_slot_cost" value="1"></label>
+                        </div>
+                        <textarea name="attr_materia_desc" placeholder="Spell Description..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+            
+            <!-- Summons Section -->
+            <div class="sheet-section-box sheet-theme-summon">
+                <h2>Summons</h2>
+                <fieldset class="repeating_summons">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_summon_name" placeholder="Summon Name (e.g. Ifrit)">
+                        <select name="attr_summon_type">
+                            <option value="Lesser">Lesser</option>
+                            <option value="Greater">Greater</option>
+                        </select>
+                        <div class="sheet-small-inputs">
+                            <label>MP Cost <input type="number" name="attr_summon_mp_cost" value="0"></label>
+                            <label>HP <input type="number" name="attr_summon_hp" value="0"></label>
+                        </div>
+                        <textarea name="attr_summon_notes" placeholder="Abilities and notes..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Limit Break Section -->
+            <div class="sheet-section-box sheet-theme-limit">
+                <h2>Limit Break</h2>
+                <div class="sheet-input-group">
+                    <label>Limit Tokens</label>
+                    <input type="number" name="attr_limit_tokens" value="0">
+                </div>
+                <div class="sheet-input-group">
+                    <label>Limit Break Name</label>
+                    <input type="text" name="attr_limit_name" placeholder="e.g. Omnislash">
+                </div>
+                <div class="sheet-input-group">
+                    <label>Description</label>
+                    <textarea name="attr_limit_description" placeholder="What does it do?"></textarea>
+                </div>
+            </div>
+
+            <!-- Job Stones Section -->
+            <div class="sheet-section-box sheet-theme-jobstone">
+                <h2>Job Stones (Max 3)</h2>
+                <p style="font-size: 0.8em; color: var(--color-grey-dark);">Note: Job stones consume an Attunement Slot.</p>
+                <fieldset class="repeating_jobstones">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_jobstone_name" placeholder="Stone Name (e.g. Soul of the Paladin)">
+                        <input type="text" name="attr_jobstone_class" placeholder="Class">
+                        <textarea name="attr_jobstone_features" placeholder="Features provided by this stone..."></textarea>
+                    </div>
+                </fieldset>
+            </div>
+
+            <!-- Chocobo Section -->
+            <div class="sheet-section-box sheet-theme-chocobo">
+                <h2>Chocobo Companion</h2>
+                <div class="sheet-checkbox-group">
+                    <input type="checkbox" name="attr_has_chocobo" value="1">
+                    <label>Has Chocobo?</label>
+                    
+                    <input type="checkbox" name="attr_chocobo_materia" value="1" style="margin-left:15px;">
+                    <label>Has Materia?</label>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Chocobo Notes</label>
+                    <textarea name="attr_chocobo_notes" placeholder="Name, color, stats..."></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ================================================ -->
+<!-- Sheet Workers (Roll20 JavaScript Engine)         -->
+<!-- ================================================ -->
+<script type="text/worker">
+    // ----------------------------------------------------
+    // Helper Functions
+    // ----------------------------------------------------
+    const calculateModifier = (scoreValue) => {
+        let score = parseInt(scoreValue, 10) || 10;
+        return Math.floor((score - 10) / 2);
+    };
+
+    const getPbFromLevel = (level) => {
+        return Math.ceil(level / 4) + 1;
+    };
+
+    const xpThresholds = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
+
+    // ----------------------------------------------------
+    // D&D Maps
+    // ----------------------------------------------------
+    const abilities = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"];
+    const skillAttrMap = {
+        athletics: "strength", acrobatics: "dexterity", sleight_of_hand: "dexterity", stealth: "dexterity",
+        arcana: "intelligence", history: "intelligence", investigation: "intelligence", nature: "intelligence", religion: "intelligence",
+        animal_handling: "wisdom", insight: "wisdom", medicine: "wisdom", perception: "wisdom", survival: "wisdom",
+        deception: "charisma", intimidation: "charisma", performance: "charisma", persuasion: "charisma"
+    };
+
+    // ----------------------------------------------------
+    // Initialization
+    // When sheet opens, recalculate PB, level up alert,
+    // DEX mod, initiative, and trigger spellcasting init.
+    // Also triggers AC, attunement, and materia calc.
+    // ----------------------------------------------------
+    on("sheet:opened", function() {
+        getAttrs(["level", "xp", "pb", "dexterity", "spellcasting_ability", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(values) {
+            let level = parseInt(values.level, 10) || 1;
+            let xp = parseInt(values.xp, 10) || 0;
+            let dex = parseInt(values.dexterity, 10) || 10;
+            
+            // PB Calculation
+            let newPb = getPbFromLevel(level);
+
+            // Level Up Alert - set 1 to check the checkbox, 0 to uncheck
+            let levelUpFlag = 0;
+            if (level < 20 && xp >= xpThresholds[level]) {
+                levelUpFlag = 1;
+            }
+            
+            let dexMod = calculateModifier(dex);
+
+            // Spellcasting initialization — recalculate on open
+            let selectedAbility = values.spellcasting_ability || "none";
+            let spellMod = 0;
+            if (selectedAbility !== "none") {
+                spellMod = parseInt(values[selectedAbility + "_mod"], 10) || 0;
+            }
+
+            setAttrs({
+                "pb": newPb,
+                "level_up_alert": levelUpFlag,
+                "dexterity_mod": dexMod,
+                "initiative": dexMod,
+                "spell_mod": spellMod,
+                "spell_save_dc": 8 + newPb + spellMod,
+                "spell_attack_bonus": newPb + spellMod
+            });
+            calculateAC();
+            updateAttunement();
+            calculateMateriaSlots();
+        });
+    });
+
+    // ----------------------------------------------------
+    // Level & XP Auto-Calculations
+    // ----------------------------------------------------
+    on("change:level change:xp", function() {
+        getAttrs(["level", "xp"], function(values) {
+            let level = parseInt(values.level, 10) || 1;
+            let xp = parseInt(values.xp, 10) || 0;
+            
+            // PB Calculation
+            let newPb = getPbFromLevel(level);
+
+            // Level Up Alert - set 1 to check, 0 to uncheck
+            let levelUpFlag = 0;
+            if (level < 20 && xp >= xpThresholds[level]) {
+                levelUpFlag = 1;
+            }
+
+            setAttrs({
+                "pb": newPb,
+                "level_up_alert": levelUpFlag
+            });
+        });
+    });
+
+    // ----------------------------------------------------
+    // Abilities & Skills Auto-Calculation
+    // ----------------------------------------------------
+    abilities.forEach(ability => {
+        on(`change:${ability}`, function() {
+            // Fetch ability score, PB, save proficiency, and all skill prof + mastery flags
+            let skillFields = Object.keys(skillAttrMap).filter(k => skillAttrMap[k] === ability);
+            let fieldsNeeded = [ability, "pb", `${ability}_save_prof`];
+            skillFields.forEach(s => {
+                fieldsNeeded.push(`${s}_prof`);
+                fieldsNeeded.push(`${s}_mastery`);
+            });
+
+            getAttrs(fieldsNeeded, function(values) {
+                let modifier = calculateModifier(values[ability]);
+                let pb = parseInt(values.pb, 10) || 2;
+                
+                let updateObj = { [`${ability}_mod`]: modifier };
+
+                // Recalculate saving throw for this ability
+                let saveProficient = parseInt(values[`${ability}_save_prof`], 10) || 0;
+                updateObj[`${ability}_save`] = modifier + (saveProficient * pb);
+                
+                // Update dependent skills — mastery adds a second PB on top of proficiency
+                for (const skill in skillAttrMap) {
+                    if (skillAttrMap[skill] === ability) {
+                        let isProficient = parseInt(values[`${skill}_prof`], 10) || 0;
+                        let hasMastery = parseInt(values[`${skill}_mastery`], 10) || 0;
+                        // Skill total = ability_mod + (PB if proficient) + (PB again if mastery)
+                        let skillTotal = modifier + (isProficient * pb) + (hasMastery * pb);
+                        updateObj[skill] = skillTotal;
+                    }
+                }
+                
+                // If DEX changed, update Initiative
+                if (ability === "dexterity") {
+                    updateObj["initiative"] = modifier;
+                }
+                
+                setAttrs(updateObj);
+            });
+        });
+    });
+
+    on("change:pb", function() {
+        let fieldsToGet = ["pb", ...abilities.map(a => `${a}_mod`), ...abilities.map(a => `${a}_save_prof`)];
+        // Also need mastery flags for all skills when PB changes
+        for (const skill in skillAttrMap) {
+            fieldsToGet.push(`${skill}_prof`);
+            fieldsToGet.push(`${skill}_mastery`);
+        }
+        
+        getAttrs(fieldsToGet, function(values) {
+            let pb = parseInt(values.pb, 10) || 2;
+            let updateObj = {};
+
+            // Recalculate all saving throws when PB changes
+            abilities.forEach(ability => {
+                let abilityMod = parseInt(values[`${ability}_mod`], 10) || 0;
+                let saveProficient = parseInt(values[`${ability}_save_prof`], 10) || 0;
+                updateObj[`${ability}_save`] = abilityMod + (saveProficient * pb);
+            });
+            
+            // Recalculate all skill bonuses when PB changes (including mastery)
+            for (const skill in skillAttrMap) {
+                let parentAttr = skillAttrMap[skill];
+                let attrMod = parseInt(values[`${parentAttr}_mod`], 10) || 0;
+                let isProficient = parseInt(values[`${skill}_prof`], 10) || 0;
+                let hasMastery = parseInt(values[`${skill}_mastery`], 10) || 0;
+                updateObj[skill] = attrMod + (isProficient * pb) + (hasMastery * pb);
+            }
+            setAttrs(updateObj);
+        });
+    });
+
+    // Proficiency checkbox change handler for each skill
+    for (const skill in skillAttrMap) {
+        on(`change:${skill}_prof`, function() {
+            let parentAttr = skillAttrMap[skill];
+            getAttrs([`${skill}_prof`, `${skill}_mastery`, `${parentAttr}_mod`, "pb"], function(values) {
+                let isProficient = parseInt(values[`${skill}_prof`], 10) || 0;
+                let hasMastery = parseInt(values[`${skill}_mastery`], 10) || 0;
+                let attrMod = parseInt(values[`${parentAttr}_mod`], 10) || 0;
+                let pb = parseInt(values.pb, 10) || 2;
+                
+                // Skill = ability_mod + (PB if proficient) + (PB if mastery/expertise)
+                let newVal = attrMod + (isProficient * pb) + (hasMastery * pb);
+                setAttrs({ [skill]: newVal });
+            });
+        });
+    }
+
+    // Mastery/Expertise checkbox change handler for each skill
+    // Mastery adds an additional PB on top of proficiency
+    for (const skill in skillAttrMap) {
+        on(`change:${skill}_mastery`, function() {
+            let parentAttr = skillAttrMap[skill];
+            getAttrs([`${skill}_prof`, `${skill}_mastery`, `${parentAttr}_mod`, "pb"], function(values) {
+                let isProficient = parseInt(values[`${skill}_prof`], 10) || 0;
+                let hasMastery = parseInt(values[`${skill}_mastery`], 10) || 0;
+                let attrMod = parseInt(values[`${parentAttr}_mod`], 10) || 0;
+                let pb = parseInt(values.pb, 10) || 2;
+                
+                // Skill = ability_mod + (PB if proficient) + (PB if mastery/expertise)
+                let newVal = attrMod + (isProficient * pb) + (hasMastery * pb);
+                setAttrs({ [skill]: newVal });
+            });
+        });
+    }
+
+    // ----------------------------------------------------
+    // Saving Throw Proficiency Change Handlers
+    // When a saving throw proficiency checkbox is toggled,
+    // recalculate that ability's saving throw value.
+    // save = ability_mod + (proficiency_bonus if checked)
+    // ----------------------------------------------------
+    abilities.forEach(ability => {
+        on(`change:${ability}_save_prof`, function() {
+            getAttrs([`${ability}_save_prof`, `${ability}_mod`, "pb"], function(values) {
+                let saveProficient = parseInt(values[`${ability}_save_prof`], 10) || 0;
+                let abilityMod = parseInt(values[`${ability}_mod`], 10) || 0;
+                let pb = parseInt(values.pb, 10) || 2;
+                
+                // Saving throw = ability modifier + proficiency bonus (if proficient)
+                setAttrs({
+                    [`${ability}_save`]: abilityMod + (saveProficient * pb)
+                });
+            });
+        });
+    });
+
+    // ----------------------------------------------------
+    // Passive Perception Up/Down Action Button Handlers
+    // These respond to the action buttons in the HTML.
+    // Each click increments or decrements by 1.
+    // ----------------------------------------------------
+    on("clicked:pp_up", function() {
+        getAttrs(["passive_perception"], function(values) {
+            let currentValue = parseInt(values.passive_perception, 10) || 10;
+            setAttrs({ "passive_perception": currentValue + 1 });
+        });
+    });
+
+    on("clicked:pp_down", function() {
+        getAttrs(["passive_perception"], function(values) {
+            let currentValue = parseInt(values.passive_perception, 10) || 10;
+            setAttrs({ "passive_perception": currentValue - 1 });
+        });
+    });
+
+    // ----------------------------------------------------
+    // AC Calculation (Armor & Shields)
+    // ----------------------------------------------------
+    const calculateAC = () => {
+        getSectionIDs("repeating_armor", function(idArray) {
+            let fieldNames = ["dexterity_mod"];
+            idArray.forEach(id => {
+                fieldNames.push(`repeating_armor_${id}_armor_equipped`);
+                fieldNames.push(`repeating_armor_${id}_armor_type`);
+                fieldNames.push(`repeating_armor_${id}_armor_ac`);
+            });
+
+            getAttrs(fieldNames, function(v) {
+                let dexMod = parseInt(v.dexterity_mod, 10) || 0;
+                let baseAC = 10;
+                let shieldBonus = 0;
+                let isArmored = false;
+                let armorDexLimit = 99; // None limits
+
+                // Iterate through equipped armor
+                idArray.forEach(id => {
+                    let isEquipped = parseInt(v[`repeating_armor_${id}_armor_equipped`], 10) || 0;
+                    if (isEquipped) {
+                        let type = v[`repeating_armor_${id}_armor_type`] || "None";
+                        let acVal = parseInt(v[`repeating_armor_${id}_armor_ac`], 10) || 0;
+
+                        if (type === "Shield") {
+                            shieldBonus += acVal;
+                        } else if (type !== "None") {
+                            // Find the best equipped armor piece
+                            if (acVal > baseAC) {
+                                baseAC = acVal;
+                                isArmored = true;
+                                if (type === "Light") armorDexLimit = 99;
+                                else if (type === "Medium") armorDexLimit = 2;
+                                else if (type === "Heavy") armorDexLimit = 0;
+                            }
+                        }
+                    }
+                });
+
+                let applicableDex = Math.min(dexMod, armorDexLimit);
+                let totalAC = baseAC + applicableDex + shieldBonus;
+
+                setAttrs({ "ac": totalAC });
+            });
+        });
+    };
+
+    on("change:repeating_armor remove:repeating_armor change:dexterity_mod", calculateAC);
+
+    // ----------------------------------------------------
+    // Attunement / Job Stone Tracker
+    // ----------------------------------------------------
+    const updateAttunement = () => {
+        getSectionIDs("repeating_jobstones", function(jobIds) {
+            getSectionIDs("repeating_attunement", function(attuneIds) {
+                let totalUsed = jobIds.length + attuneIds.length;
+                setAttrs({
+                    "attunement_tracker": `${totalUsed} / 3`
+                });
+            });
+        });
+    };
+    on("change:repeating_jobstones remove:repeating_jobstones change:repeating_attunement remove:repeating_attunement", updateAttunement);
+
+    // ----------------------------------------------------
+    // Spellcasting Auto-calculations
+    // ----------------------------------------------------
+    on("change:spellcasting_ability change:pb change:intelligence_mod change:wisdom_mod change:charisma_mod", function() {
+        getAttrs(["spellcasting_ability", "pb", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(values) {
+            let selectedAbility = values.spellcasting_ability || "none";
+            let pb = parseInt(values.pb, 10) || 2;
+            
+            // Look up the modifier from the selected ability key
+            let spellMod = 0;
+            if (selectedAbility !== "none") {
+                spellMod = parseInt(values[selectedAbility + "_mod"], 10) || 0;
+            }
+            
+            setAttrs({
+                "spell_mod": spellMod,
+                "spell_save_dc": 8 + pb + spellMod,
+                "spell_attack_bonus": pb + spellMod
+            });
+        });
+    });
+
+    // ----------------------------------------------------
+    // Materia Slots Auto-Calculation
+    // Sums the materia slot counts from all armor pieces
+    // and all weapons to auto-populate materia_slots_max.
+    // This replaces manual entry of max materia slots.
+    // ----------------------------------------------------
+    const calculateMateriaSlots = () => {
+        getSectionIDs("repeating_armor", function(armorIds) {
+            getSectionIDs("repeating_weapons", function(weaponIds) {
+                // Build list of all materia fields from armor and weapons
+                let fieldNames = [];
+                armorIds.forEach(id => {
+                    fieldNames.push(`repeating_armor_${id}_armor_materia`);
+                });
+                weaponIds.forEach(id => {
+                    fieldNames.push(`repeating_weapons_${id}_weapon_materia`);
+                });
+
+                getAttrs(fieldNames, function(values) {
+                    let totalSlots = 0;
+                    // Sum armor materia slot values
+                    armorIds.forEach(id => {
+                        totalSlots += parseInt(values[`repeating_armor_${id}_armor_materia`], 10) || 0;
+                    });
+                    // Sum weapon materia slot values
+                    weaponIds.forEach(id => {
+                        totalSlots += parseInt(values[`repeating_weapons_${id}_weapon_materia`], 10) || 0;
+                    });
+
+                    setAttrs({ "materia_slots_max": totalSlots });
+                });
+            });
+        });
+    };
+
+    // Wire materia recalculation to armor and weapon changes
+    on("change:repeating_armor remove:repeating_armor change:repeating_weapons remove:repeating_weapons", calculateMateriaSlots);
+
+</script>
+

@@ -1,0 +1,16 @@
+# Roll20 Character Sheets Final Fantasy DND Todo
+
+- [x] 2026-05-08 22:51:00 - Clone empty repository and initialize basic README.
+- [x] 2026-05-08 22:51:00 - Wait for user to attach character sheet files.
+- [ ] 2026-05-08 22:51:00 - Update README with detailed "Purpose" and "How it works" after reviewing files.
+- [x] 2026-05-08 22:57:00 - Add saving throw proficiency checkboxes + computed save values + roll buttons to each ability score block (STR/DEX/CON/INT/WIS/CHA).
+- [x] 2026-05-08 22:57:00 - Wire saving throw sheet workers: recalculate on ability change, PB change, and proficiency toggle.
+- [x] 2026-05-08 22:57:00 - Make passive perception editable with up/down arrow action buttons (removed readonly auto-calc).
+- [x] 2026-05-08 22:57:00 - Add CSS for .sheet-save-row, .sheet-save-val, .sheet-pp-controls, .sheet-pp-arrow styling.
+- [x] 2026-05-08 23:03:00 - Create Roll20_Development_Reference.md reference guide from wiki.roll20.net docs.
+- [x] 2026-05-08 23:03:00 - Add mastery/expertise (second gold checkbox) to all 18 skill rows with sheet worker calc (mod + PB + PB if mastery).
+- [x] 2026-05-08 23:03:00 - Add mastery change handlers and update PB/ability change handlers to include mastery in recalculations.
+- [x] 2026-05-08 23:03:00 - Auto-calculate materia_slots_max from repeating_armor and repeating_weapons materia field sums.
+- [x] 2026-05-08 23:03:00 - Generate FF-themed background watermark image and apply as CSS ::before overlay (opacity 0.06).
+- [x] 2026-05-08 23:03:00 - Fix spellcasting initialization on sheet:opened (modifier, save DC, attack bonus now computed on open).
+- [x] 2026-05-08 23:03:00 - Rename armor/weapon materia labels to 'M. Slots' and make materia_slots_max readonly.

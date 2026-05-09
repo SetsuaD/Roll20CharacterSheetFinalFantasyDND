@@ -1,0 +1,764 @@
+/* 
+    Roll20 Character Sheet CSS
+    Theme: D&D 2024 Official Character Sheet Style + Final Fantasy Accents
+    
+    ROLL20 COMPATIBILITY NOTES:
+    - All classes use the sheet- prefix (required by Roll20 CSS parser)
+    - No body/html selectors (Roll20 sandboxes content)
+    - No forbidden keywords (eval, cookie, window, parent, this, etc.)
+    - Google Fonts imported via css?family format (css2 blocked by security)
+    - CSS variables scoped to .sheet-main-container (not :root)
+    - Repeating section controls (.repitem / .itemcontrol) explicitly styled
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic|Noto+Sans:400,600,700&display=swap');
+
+/* ================================================ */
+/* Design Tokens (scoped to main container)         */
+/* ================================================ */
+.sheet-main-container {
+    --color-red: #c62828;
+    --color-dark: #1a1a1a;
+    --color-grey-dark: #5a5a5a;
+    --color-grey-mid: #b0a99f;
+    --color-grey-light: #e8e4dd;
+    --color-cream: #f5f2eb;
+    --color-white: #ffffff;
+    --color-border: #c7c1b3;
+
+    --ff-blue: #1565c0;
+    --ff-teal: #00796b;
+    --ff-gold: #f9a825;
+    --ff-purple: #6a1b9a;
+    --ff-orange: #e65100;
+
+    --font-heading: 'Libre Baskerville', 'Georgia', serif;
+    --font-body: 'Noto Sans', 'Segoe UI', sans-serif;
+
+    --radius: 10px;
+    --radius-small: 6px;
+    --gap: 12px;
+
+    /* Base container styles */
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--color-dark);
+    background-color: var(--color-cream);
+    background-image:
+        radial-gradient(ellipse at 15% 15%, rgba(220, 210, 190, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(220, 210, 190, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
+    border: 2px solid var(--color-border);
+    border-top: 5px solid var(--color-red);
+    padding: 25px;
+    max-width: 1050px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Watermark background overlay using FF-themed artwork       */
+/* NOTE: For Roll20 deployment, replace the url() path below  */
+/* with the hosted image URL from Roll20's CDN or Imgur, etc. */
+.sheet-main-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('ff_sheet_background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Ensure all direct children render above the watermark */
+.sheet-main-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ================================================ */
+/* Typography                                       */
+/* ================================================ */
+.sheet-main-container h1,
+.sheet-main-container h2,
+.sheet-main-container h3 {
+    font-family: var(--font-heading);
+    color: var(--color-red);
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.sheet-main-container h1 { font-size: 1.8em; }
+.sheet-main-container h2 { font-size: 1.1em; text-transform: uppercase; letter-spacing: 1.5px; }
+.sheet-main-container h3 { font-size: 0.95em; }
+
+.sheet-sub-header {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-grey-light);
+}
+
+/* ================================================ */
+/* Header                                           */
+/* ================================================ */
+.sheet-header {
+    border-bottom: 3px solid var(--color-red);
+    padding-bottom: 18px;
+    margin-bottom: 25px;
+}
+
+.sheet-header h1 {
+    margin-bottom: 12px;
+}
+
+.sheet-header-details {
+    display: flex;
+    gap: 20px;
+    background: var(--color-grey-light);
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    flex-wrap: wrap;
+}
+
+.sheet-input-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.sheet-input-group label {
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-grey-dark);
+    margin-bottom: 3px;
+}
+
+/* ================================================ */
+/* Level Up Indicator                               */
+/* Uses :checked pseudo-class on a hidden checkbox  */
+/* This is the ONLY reliable dynamic CSS toggle     */
+/* pattern in Roll20's sandboxed environment.        */
+/* ================================================ */
+.sheet-level-up-toggle {
+    display: none;
+}
+
+.sheet-level-up-indicator {
+    display: none;
+    position: absolute;
+    top: -15px;
+    left: -5px;
+    background: var(--ff-gold);
+    color: var(--color-dark);
+    font-size: 0.65em;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    animation: sheet-pulse 1.5s infinite;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* When the hidden checkbox is checked, show the indicator */
+.sheet-level-up-toggle:checked ~ .sheet-level-up-indicator {
+    display: block;
+}
+
+@keyframes sheet-pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 168, 37, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(249, 168, 37, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(249, 168, 37, 0); }
+}
+
+/* ================================================ */
+/* Forms                                            */
+/* ================================================ */
+.sheet-main-container input[type="text"],
+.sheet-main-container input[type="number"],
+.sheet-main-container select {
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--color-dark);
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid var(--color-grey-mid);
+    border-radius: 0;
+    padding: 5px 2px;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+
+.sheet-main-container input[readonly] {
+    color: var(--color-grey-dark);
+    border-bottom-style: dotted;
+    border-bottom-color: var(--color-grey-light);
+    background-color: transparent;
+}
+
+.sheet-main-container input[type="text"]:focus,
+.sheet-main-container input[type="number"]:focus,
+.sheet-main-container select:focus {
+    border-bottom-color: var(--color-red);
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.sheet-main-container textarea {
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--color-dark);
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    padding: 8px;
+    resize: vertical;
+    min-height: 45px;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    margin-top: 5px;
+}
+
+.sheet-main-container textarea:focus {
+    border-color: var(--color-red);
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* ================================================ */
+/* Layout                                           */
+/* ================================================ */
+.sheet-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+.sheet-section-box {
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 15px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.sheet-section-box h2 {
+    border-bottom: 2px solid var(--color-red);
+    padding-bottom: 6px;
+    margin-bottom: 15px;
+}
+
+/* ================================================ */
+/* Ability Score Blocks                             */
+/* ================================================ */
+.sheet-attribute-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 12px 12px 10px;
+    margin-bottom: 12px;
+    text-align: center;
+    position: relative;
+}
+
+.sheet-attribute-box > label {
+    font-weight: 700;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-grey-dark);
+    margin-bottom: 4px;
+}
+
+.sheet-score-input {
+    width: 55px !important;
+    height: 42px;
+    text-align: center !important;
+    font-size: 1.7em !important;
+    font-weight: 700 !important;
+    background: var(--color-white) !important;
+    border: 2px solid var(--color-border) !important;
+    border-radius: 8px !important;
+    padding: 0 !important;
+}
+
+.sheet-mod-input {
+    width: 32px !important;
+    height: 24px;
+    text-align: center !important;
+    font-size: 0.9em !important;
+    font-weight: 700 !important;
+    background: var(--color-grey-light) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 12px !important;
+    margin-top: -6px;
+    padding: 0 !important;
+    color: var(--color-dark) !important;
+}
+
+/* ================================================ */
+/* Roll Buttons                                     */
+/* ================================================ */
+.sheet-main-container button[type="roll"] {
+    font-family: var(--font-body);
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-dark);
+    background: var(--color-grey-light);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    padding: 4px 10px;
+    margin-top: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.sheet-main-container button[type="roll"]:hover {
+    background: var(--color-red);
+    color: var(--color-white);
+    border-color: var(--color-red);
+}
+
+/* ================================================ */
+/* Stat Bubbles & Rows                              */
+/* ================================================ */
+.sheet-stat-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.sheet-stat-bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    background: var(--color-cream);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 10px 8px;
+    text-align: center;
+}
+
+.sheet-stat-bubble label {
+    font-size: 0.7em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-grey-dark);
+    margin-bottom: 4px;
+}
+
+.sheet-stat-bubble input[type="number"],
+.sheet-stat-bubble input[type="text"] {
+    width: 100%;
+    max-width: 45px;
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: 700;
+    border: none;
+    border-bottom: 2px solid var(--color-grey-mid);
+    background: transparent;
+}
+
+.sheet-pb-input {
+    font-size: 1.6em !important;
+    color: var(--color-red) !important;
+    max-width: 60px !important;
+}
+
+.sheet-stat-bubble-ac {
+    border-color: #1565c0;
+}
+
+.sheet-stat-bubble-gold {
+    border-color: #f9a825;
+}
+
+.sheet-flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.sheet-flex-center span {
+    font-weight: 700;
+    color: var(--color-grey-dark);
+    font-size: 1.2em;
+}
+
+.sheet-flex-center input[type="number"] {
+    width: 38px !important;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+/* ================================================ */
+/* Skills List                                      */
+/* ================================================ */
+.sheet-skills-list {
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 8px;
+}
+
+.sheet-skill-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3px 5px;
+}
+
+.sheet-skill-row:nth-child(even) {
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: var(--radius-small);
+}
+
+.sheet-skill-row input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--color-red);
+}
+
+/* Mastery/Expertise checkbox — gold color to distinguish     */
+/* from the red proficiency checkbox. Mastery doubles the PB.  */
+.sheet-mastery-checkbox {
+    accent-color: var(--ff-gold) !important;
+}
+
+.sheet-skill-name {
+    flex: 1;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-align: left;
+    margin-left: 8px;
+    color: var(--color-dark);
+}
+
+.sheet-skill-val {
+    width: 26px !important;
+    text-align: center;
+    font-size: 0.9em !important;
+    font-weight: 700 !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.sheet-skill-row button[type="roll"] {
+    margin: 0;
+    padding: 2px 6px;
+    font-size: 0.7em;
+}
+
+/* ================================================ */
+/* Saving Throw Row (inside ability blocks)         */
+/* Displayed inline: proficiency checkbox, label,   */
+/* computed save value, and a roll button.           */
+/* ================================================ */
+.sheet-save-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 6px;
+    padding: 5px 8px;
+    background: rgba(198, 40, 40, 0.06);
+    border: 1px solid rgba(198, 40, 40, 0.18);
+    border-radius: var(--radius-small);
+    box-sizing: border-box;
+}
+
+.sheet-save-row input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--color-red);
+}
+
+.sheet-save-label {
+    font-size: 0.78em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-grey-dark);
+}
+
+.sheet-save-val {
+    width: 28px !important;
+    text-align: center;
+    font-size: 0.9em !important;
+    font-weight: 700 !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    color: var(--color-red) !important;
+}
+
+.sheet-save-row button[type="roll"] {
+    margin: 0;
+    padding: 2px 8px;
+    font-size: 0.7em;
+}
+
+/* ================================================ */
+/* Passive Perception Arrow Controls                */
+/* Up/Down buttons flanking an editable input field */
+/* ================================================ */
+.sheet-pp-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.sheet-pp-controls input[type="number"] {
+    width: 40px !important;
+    max-width: 40px !important;
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: 700;
+    border: none;
+    border-bottom: 2px solid var(--color-grey-mid);
+    background: transparent;
+}
+
+.sheet-pp-arrow {
+    font-family: var(--font-body);
+    font-size: 0.85em !important;
+    color: var(--color-dark);
+    background: var(--color-grey-light);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: 2px 5px;
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.15s ease;
+}
+
+.sheet-pp-arrow:hover {
+    background: var(--color-red);
+    color: var(--color-white);
+    border-color: var(--color-red);
+}
+
+/* ================================================ */
+/* Death Saves                                      */
+/* ================================================ */
+.sheet-death-saves {
+    background: var(--color-cream);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.sheet-death-saves > label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+}
+
+.sheet-ds-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.sheet-ds-row span {
+    font-size: 0.8em;
+    font-weight: 600;
+    width: 60px;
+    text-align: right;
+    margin-right: 5px;
+}
+
+/* ================================================ */
+/* Armor Proficiency Checkboxes                     */
+/* ================================================ */
+.sheet-armor-prof {
+    font-size: 0.85em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+/* ================================================ */
+/* Repeating Section Controls (Roll20 Injected)     */
+/* These classes are auto-generated by Roll20 and   */
+/* wrap around our fieldset content. We must style   */
+/* them to ensure Modify/Delete buttons are usable. */
+/* ================================================ */
+.sheet-main-container .repcontainer {
+    overflow: visible;
+}
+
+.sheet-main-container .repcontainer .repitem {
+    position: relative;
+    overflow: visible;
+    margin-bottom: 4px;
+}
+
+.sheet-main-container .repcontainer .repitem .itemcontrol {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    z-index: 100;
+    display: flex;
+    gap: 2px;
+}
+
+.sheet-main-container .repcontainer .repitem .itemcontrol .repcontrol_del,
+.sheet-main-container .repcontainer .repitem .itemcontrol .repcontrol_move {
+    z-index: 101;
+}
+
+/* ================================================ */
+/* Repeating Row Styling                            */
+/* ================================================ */
+.sheet-repeating-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-grey-light);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sheet-repeating-row:last-child {
+    border-bottom: none;
+}
+
+.sheet-weapon-row {
+    background: var(--color-cream);
+    padding: 10px;
+    padding-top: 20px; /* Extra space at top for Roll20 modify/delete controls */
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    margin-bottom: 8px;
+}
+
+.sheet-small-inputs {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.sheet-small-inputs label {
+    font-size: 0.75em;
+    font-weight: 600;
+    color: var(--color-grey-dark);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sheet-small-inputs input[type="number"],
+.sheet-small-inputs input[type="text"] {
+    width: 65px;
+}
+
+/* ================================================ */
+/* Checkbox Groups                                  */
+/* ================================================ */
+.sheet-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px 10px;
+    background: var(--color-cream);
+    border-radius: var(--radius-small);
+    border: 1px solid var(--color-grey-light);
+    flex-wrap: wrap;
+}
+
+.sheet-checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-red);
+    cursor: pointer;
+}
+
+.sheet-equip-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--color-red);
+    cursor: pointer;
+}
+
+.sheet-checkbox-group label {
+    font-weight: 700;
+    font-size: 0.85em;
+}
+
+/* Attunement tracker styling */
+.sheet-attunement-tracker {
+    color: var(--color-red);
+    font-weight: 700;
+}
+
+/* ================================================ */
+/* Final Fantasy Themed Section Borders             */
+/* ================================================ */
+.sheet-theme-magic { border-top: 4px solid var(--ff-blue); }
+.sheet-theme-magic h2 { color: var(--ff-blue); border-bottom-color: var(--ff-blue); }
+.sheet-theme-magic .sheet-stat-bubble { border-color: rgba(21, 101, 192, 0.3); }
+
+.sheet-theme-limit { border-top: 4px solid var(--ff-gold); }
+.sheet-theme-limit h2 { color: #c17900; border-bottom-color: var(--ff-gold); }
+
+.sheet-theme-chocobo { border-top: 4px solid var(--ff-orange); }
+.sheet-theme-chocobo h2 { color: var(--ff-orange); border-bottom-color: var(--ff-orange); }
+
+.sheet-theme-materia { border-top: 4px solid var(--ff-teal); }
+.sheet-theme-materia h2 { color: var(--ff-teal); border-bottom-color: var(--ff-teal); }
+.sheet-theme-materia .sheet-stat-bubble { border-color: rgba(0, 121, 107, 0.3); }
+
+.sheet-theme-jobstone { border-top: 4px solid var(--color-dark); }
+.sheet-theme-jobstone h2 { color: var(--color-dark); border-bottom-color: var(--color-dark); }
+
+.sheet-theme-summon { border-top: 4px solid var(--ff-purple); }
+.sheet-theme-summon h2 { color: var(--ff-purple); border-bottom-color: var(--ff-purple); }
+
+/* ================================================ */
+/* Responsive Grid                                  */
+/* ================================================ */
+@media screen and (max-width: 900px) {
+    .sheet-body-grid {
+        grid-template-columns: 1fr;
+    }
+}
