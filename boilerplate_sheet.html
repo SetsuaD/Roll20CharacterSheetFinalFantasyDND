@@ -9,6 +9,16 @@
 <div class="sheet-main-container">
 
     <!-- ================================================ -->
+    <!-- SHEET SETTINGS / IMPORT                          -->
+    <!-- ================================================ -->
+    <div class="sheet-settings-box" style="margin-bottom: 20px; padding: 15px; border: 1px dashed var(--color-grey-dark); border-radius: 4px; background: rgba(0,0,0,0.02);">
+        <h3>Character Importer</h3>
+        <p style="font-size: 0.85em; margin-bottom: 10px;">Paste a JSON character export below and click Import. Warning: This will overwrite existing fields.</p>
+        <textarea name="attr_import_data" placeholder='{"character_name": "Cecil", "level": 1}' style="width: 100%; height: 60px; margin-bottom: 10px; font-family: monospace;"></textarea>
+        <button type="action" name="act_import_json">Import Character</button>
+    </div>
+
+    <!-- ================================================ -->
     <!-- CHARACTER HEADER                                 -->
     <!-- ================================================ -->
     <div class="sheet-header">
@@ -1042,6 +1052,23 @@
 
     // Wire materia recalculation to armor and weapon changes
     on("change:repeating_armor remove:repeating_armor change:repeating_weapons remove:repeating_weapons", calculateMateriaSlots);
+
+    // ----------------------------------------------------
+    // JSON Character Import
+    // ----------------------------------------------------
+    on("clicked:import_json", function() {
+        getAttrs(["import_data"], function(values) {
+            if (!values.import_data) return;
+            try {
+                let parsed = JSON.parse(values.import_data);
+                // Clear the import data field
+                parsed["import_data"] = "";
+                setAttrs(parsed);
+            } catch (e) {
+                console.error("Roll20 Sheet JSON Import Error:", e);
+            }
+        });
+    });
 
 </script>
 

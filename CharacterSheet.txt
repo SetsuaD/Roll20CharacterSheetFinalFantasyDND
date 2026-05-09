@@ -1,0 +1,574 @@
+Final Fantasy–Style D&D Party Sheets
+
+Roll method used: 4d6, drop the lowest die, assign the remaining 3d6 total to stats.
+
+Party concept: A balanced FF1–FF6 inspired “A Team” built around classic roles: Paladin/Knight, White Mage, Thief, and Black Mage/Summoner.
+
+Faction setup:
+
+Faction 1 — Kingdom of Cornelia: Cecil Highwind and Lenna Highwind, siblings.
+Faction 2 — Kingdom of Figaro: Locke Valeclaw and Terra Figaro, childhood friends.
+The kingdoms are separate but not enemies. This party is a joint envoy/adventuring team sent to investigate crystal disturbances, monster raids, and lost ancient magic.
+CHARACTER 1 — CECIL HIGHWIND
+
+Role: Front-line tank, party protector, backup healing, holy damage
+Relationship: Older sibling of Lenna Highwind
+Faction: Faction 1 — Kingdom of Cornelia
+Rolled stat set: 17, 11, 13, 14, 12, 13
+
+CHARACTER INFO
+
+Name: Cecil Highwind
+Race: Human
+Class: Paladin
+Level: 1
+Background: Knight-Errant of Cornelia
+Player (Main Character?): Yes
+
+❤️ CORE STATS
+
+HP: 12 / 12
+AC: 18
+Speed: 30 ft.
+STR: 17
+DEX: 11
+CON: 14
+INT: 12
+WIS: 13
+CHA: 13
+Proficiency Bonus: +2
+Saving Throws: Wisdom +3, Charisma +3
+Skills: Athletics +5, Insight +3, Persuasion +3, Religion +3
+
+⚔️ COMBAT
+
+Weapon 1: Longsword + Shield — Damage: 1d8+3 slashing
+Weapon 2: Javelin — Damage: 1d6+3 piercing
+Attack Bonus: +5
+
+MP (MAGIC POINTS)
+
+Max MP: 2
+Current MP: 2
+
+MATERIA
+
+Materia Slots: Max: 3 / Used: 0
+
+Materia Name	Spell	Slot Cost	MP Cost
+
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+	
+
+⚔️ JOB STONES (ATTUNED)
+
+Max 3
+
+Stone 1: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 2: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 3: __________________
+
+Class: __________________
+Features: __________________________________
+CANTRIPS
+
+Base Class:
+
+None by default
+Job Stone:
+
+
+SUMMONS
+
+Summon 1: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+
+Summon 2: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+LIMIT BREAK
+
+Tokens: 0 / 3
+Limit Break Name: Lunar Bastion
+Effect: Cecil raises his shield and releases a pale moonlit barrier. All allies within 15 ft. gain temporary HP equal to Cecil’s level + CHA modifier, and Cecil may make one immediate weapon attack against an enemy threatening an ally.
+
+CHOCOBO
+
+Has Chocobo: No
+Notes: __________________________
+
+EQUIPMENT
+
+Weapon: Longsword, 3 javelins
+Armor: Chain mail, shield
+Accessories: Cornelian signet ring, silver prayer charm
+Special Items: Crystal compass, royal field orders, 2 potions
+
+REST & RESOURCES
+
+Sleeping Bag: Yes
+Short Rest Uses Remaining: 2
+
+NOTES / PERSONALITY
+
+Traits: Calm under pressure, protective, speaks formally when nervous.
+Goals: Keep Lenna safe, prove the two kingdoms can work together, uncover the source of the crystal disturbances.
+Quirks: Apologizes to defeated enemies. Names every shield he uses.
+
+OPTIONAL — SUMMON ACTIVE TRACKER
+
+Active Summon: __________________
+HP: ______ / ______
+Concentration: Active / Broken
+
+CHARACTER 2 — LENNA HIGHWIND
+
+Role: White Mage support, emergency healer, divine utility, morale anchor
+Relationship: Younger sibling of Cecil Highwind
+Faction: Faction 1 — Kingdom of Cornelia
+Rolled stat set: 12, 5, 12, 10, 15, 15
+
+CHARACTER INFO
+
+Name: Lenna Highwind
+Race: Half-Elf
+Class: Cleric
+Level: 1
+Background: Temple Acolyte of the Crystal Chapel
+Player (Main Character?): Yes
+
+❤️ CORE STATS
+
+HP: 9 / 9
+AC: 18
+Speed: 30 ft.
+STR: 12
+DEX: 10
+CON: 12
+INT: 5
+WIS: 15
+CHA: 15
+Proficiency Bonus: +2
+Saving Throws: Wisdom +4, Charisma +4
+Skills: Insight +4, Medicine +4, Persuasion +4, Religion -1
+
+⚔️ COMBAT
+
+Weapon 1: Mace — Damage: 1d6+1 bludgeoning
+Weapon 2: Light Crossbow — Damage: 1d8 piercing
+Attack Bonus: +3 melee / +2 ranged / +4 spell attack
+
+MP (MAGIC POINTS)
+
+Max MP: 1
+Current MP: 1
+
+MATERIA
+
+Materia Slots: Max: 4 / Used: 0
+
+Materia Name	Spell	Slot Cost	MP Cost
+
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+	
+
+⚔️ JOB STONES (ATTUNED)
+
+Max 3
+
+Stone 1: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 2: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 3: __________________
+
+Class: __________________
+Features: __________________________________
+CANTRIPS
+
+Base Class:
+
+Guidance
+Sacred Flame
+Job Stone:
+
+
+SUMMONS
+
+Summon 1: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+
+Summon 2: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+LIMIT BREAK
+
+Tokens: 0 / 3
+Limit Break Name: White Wind Benediction
+Effect: Lenna releases a wave of white-gold light. Each ally she can see within 30 ft. regains HP equal to 1d8 + her WIS modifier. One poisoned, frightened, or charmed condition may also be removed from one ally.
+
+CHOCOBO
+
+Has Chocobo: No
+Notes: __________________________
+
+EQUIPMENT
+
+Weapon: Mace, light crossbow
+Armor: Chain mail, shield
+Accessories: Crystal rosary, healer’s satchel
+Special Items: Healer’s kit, holy water, 3 potions, tiny bell used for prayer songs
+
+REST & RESOURCES
+
+Sleeping Bag: Yes
+Short Rest Uses Remaining: 2
+
+NOTES / PERSONALITY
+
+Traits: Kind, trusting, deeply intuitive, terrible with maps and written instructions.
+Goals: Heal the damage caused by the crystal disturbances and keep Cecil from sacrificing himself for everyone else.
+Quirks: Gives every monster a chance to surrender. Talks to statues because “sometimes they answer.”
+
+OPTIONAL — SUMMON ACTIVE TRACKER
+
+Active Summon: __________________
+HP: ______ / ______
+Concentration: Active / Broken
+
+CHARACTER 3 — LOCKE VALECLAW
+
+Role: Scout, thief, trap handler, ranged backup, comic relief with a secret heart
+Relationship: Childhood friend of Terra Figaro
+Faction: Faction 2 — Kingdom of Figaro
+Rolled stat set: 13, 13, 12, 8, 5, 15
+
+CHARACTER INFO
+
+Name: Locke Valeclaw
+Race: Beastfolk — Catfolk
+Class: Rogue
+Level: 1
+Background: Treasure Hunter of Figaro
+Player (Main Character?): Yes
+
+❤️ CORE STATS
+
+HP: 9 / 9
+AC: 14
+Speed: 30 ft.
+STR: 8
+DEX: 15
+CON: 13
+INT: 12
+WIS: 5
+CHA: 13
+Proficiency Bonus: +2
+Saving Throws: Dexterity +4, Intelligence +3
+Skills: Acrobatics +4, Deception +3, Investigation +3, Sleight of Hand +6, Stealth +6, Thieves’ Tools +4
+
+⚔️ COMBAT
+
+Weapon 1: Rapier — Damage: 1d8+2 piercing plus Sneak Attack 2d6
+Weapon 2: Shortbow — Damage: 1d6+2 piercing plus Sneak Attack 2d6 if conditions apply
+Attack Bonus: +4
+
+MP (MAGIC POINTS)
+
+Max MP: 4
+Current MP: 4
+
+MATERIA
+
+Materia Slots: Max: 3 / Used: 0
+
+Materia Name	Spell	Slot Cost	MP Cost
+
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+	
+
+⚔️ JOB STONES (ATTUNED)
+
+Max 3
+
+Stone 1: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 2: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 3: __________________
+
+Class: __________________
+Features: __________________________________
+CANTRIPS
+
+Base Class:
+
+None by default
+Job Stone:
+
+
+SUMMONS
+
+Summon 1: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+
+Summon 2: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+LIMIT BREAK
+
+Tokens: 0 / 3
+Limit Break Name: Mirage Raid
+Effect: Locke vanishes in a flash of smoke and appears behind the weakest point in enemy defenses. He may move up to his speed without provoking opportunity attacks and make one weapon attack with advantage. If it hits, add an extra 2d6 damage.
+
+CHOCOBO
+
+Has Chocobo: No
+Notes: __________________________
+
+EQUIPMENT
+
+Weapon: Rapier, shortbow, 2 daggers
+Armor: Studded leather
+Accessories: Lockpick earrings, Figaro coin charm
+Special Items: Thieves’ tools, 50 ft. rope, grappling hook, smoke pellets, 2 potions
+
+REST & RESOURCES
+
+Sleeping Bag: Yes
+Short Rest Uses Remaining: 2
+
+NOTES / PERSONALITY
+
+Traits: Fast-talking, brave when cornered, allergic to plans that involve waiting.
+Goals: Protect Terra, find legendary treasure, prove that “treasure hunter” sounds better than “thief.”
+Quirks: Has terrible judgment but incredible luck. Calls every locked door “a personal invitation.”
+
+OPTIONAL — SUMMON ACTIVE TRACKER
+
+Active Summon: __________________
+HP: ______ / ______
+Concentration: Active / Broken
+
+CHARACTER 4 — TERRA FIGARO
+
+Role: Black Mage artillery, battlefield control, summon specialist, crystal mystery focus
+Relationship: Childhood friend of Locke Valeclaw
+Faction: Faction 2 — Kingdom of Figaro
+Rolled stat set: 7, 11, 14, 18, 13, 6
+
+CHARACTER INFO
+
+Name: Terra Figaro
+Race: Elf
+Class: Wizard
+Level: 1
+Background: Crystal-Touched Scholar
+Player (Main Character?): Yes
+
+❤️ CORE STATS
+
+HP: 8 / 8
+AC: 14 with Mage Armor / 11 without Mage Armor
+Speed: 30 ft.
+STR: 7
+DEX: 13
+CON: 14
+INT: 18
+WIS: 11
+CHA: 6
+Proficiency Bonus: +2
+Saving Throws: Intelligence +6, Wisdom +2
+Skills: Arcana +6, History +6, Investigation +6, Nature +6
+
+⚔️ COMBAT
+
+Weapon 1: Fire Bolt — Damage: 1d10 fire
+Weapon 2: Dagger — Damage: 1d4+1 piercing
+Attack Bonus: +6 spell attack / +3 dagger
+
+MP (MAGIC POINTS)
+
+Max MP: 4
+Current MP: 4
+
+MATERIA
+
+Materia Slots: Max: 4 / Used: 0
+
+Materia Name	Spell	Slot Cost	MP Cost
+
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+	
+
+
+	
+	
+	
+
+⚔️ JOB STONES (ATTUNED)
+
+Max 3
+
+Stone 1: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 2: __________________
+
+Class: __________________
+Features: __________________________________
+
+Stone 3: __________________
+
+Class: __________________
+Features: __________________________________
+CANTRIPS
+
+Base Class:
+
+Fire Bolt
+Mage Hand
+Job Stone:
+
+
+SUMMONS
+
+Summon 1: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+
+Summon 2: __________________
+
+Type: Lesser / Greater
+MP Cost: ______
+HP: ______
+Notes: __________________________
+LIMIT BREAK
+
+Tokens: 0 / 3
+Limit Break Name: Trance Flare
+Effect: Terra glows with unstable crystal light. For 1 round, her next offensive spell deals an extra 2d6 damage of the spell’s type, and she gains resistance to that same damage type until the start of her next turn.
+
+CHOCOBO
+
+Has Chocobo: No
+Notes: __________________________
+
+EQUIPMENT
+
+Weapon: Dagger, spell focus crystal
+Armor: None; relies on Mage Armor
+Accessories: Cracked crystal pendant, scholar’s satchel
+Special Items: Spellbook, ink, chalk, 3 mana vials, 1 potion
+
+REST & RESOURCES
+
+Sleeping Bag: Yes
+Short Rest Uses Remaining: 2
+
+NOTES / PERSONALITY
+
+Traits: Brilliant, quiet, intense, socially awkward, fascinated by forgotten magic.
+Goals: Discover why the crystals react to her presence, protect Locke from his own terrible ideas, and decode the ancient summon script.
+Quirks: Accidentally says terrifying things in a calm voice. Takes notes during combat.
+
+OPTIONAL — SUMMON ACTIVE TRACKER
+
+Active Summon: __________________
+HP: ______ / ______
+Concentration: Active / Broken

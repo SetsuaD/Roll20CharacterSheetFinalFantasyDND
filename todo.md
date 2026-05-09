@@ -14,3 +14,8 @@
 - [x] 2026-05-08 23:03:00 - Generate FF-themed background watermark image and apply as CSS ::before overlay (opacity 0.06).
 - [x] 2026-05-08 23:03:00 - Fix spellcasting initialization on sheet:opened (modifier, save DC, attack bonus now computed on open).
 - [x] 2026-05-08 23:03:00 - Rename armor/weapon materia labels to 'M. Slots' and make materia_slots_max readonly.
+- [x] 2026-05-09 01:17:00 - Implement a JSON character importer UI and sheet worker to boilerplate_sheet.html
+- [x] 2026-05-09 01:17:00 - Generate Cecil Highwind JSON export for Roll20 import
+- [x] 2026-05-09 01:17:00 - Generate Lenna Highwind JSON export for Roll20 import
+- [x] 2026-05-09 01:17:00 - Generate Locke Valeclaw JSON export for Roll20 import
+- [x] 2026-05-09 01:17:00 - Generate Terra Figaro JSON export for Roll20 import
