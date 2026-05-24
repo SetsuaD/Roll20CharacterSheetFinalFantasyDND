@@ -16,6 +16,8 @@
         <p style="font-size: 0.85em; margin-bottom: 10px;">Paste a JSON character export below and click Import. Warning: This will overwrite existing fields.</p>
         <textarea name="attr_import_data" placeholder='{"character_name": "Cecil", "level": 1}' style="width: 100%; height: 60px; margin-bottom: 10px; font-family: monospace;"></textarea>
         <button type="action" name="act_import_json">Import Character</button>
+        <!-- Status field shows import success or error messages -->
+        <input type="text" name="attr_import_status" readonly style="width: 100%; margin-top: 8px; font-family: monospace; font-size: 0.8em; padding: 4px; border: 1px solid #ccc; background: #f9f9f9;" placeholder="Import status will appear here...">
     </div>
 
     <!-- ================================================ -->
@@ -360,10 +362,13 @@
                         <label>AC</label>
                         <input type="number" name="attr_ac" value="10">
                     </div>
-                    <div class="sheet-stat-bubble">
+                     <div class="sheet-stat-bubble">
                         <label>Initiative</label>
                         <input type="number" name="attr_initiative" value="0">
-                        <button type="roll" name="roll_init" value="/roll 1d20 + @{initiative} &amp;{tracker}">Roll</button>
+                        <!-- Optional bonus from feats like Alert, added on top of DEX mod -->
+                        <label style="font-size: 0.7em; margin-top: 2px;">Bonus <input type="number" name="attr_initiative_bonus" value="0" style="width: 40px;"></label>
+                        <button type="roll" name="roll_init" value="&amp;{template:default} {{name=@{character_name} Initiative}} {{Roll=[[1d20 + @{initiative} &amp;{tracker}]]}}" title="IMPORTANT: Select this character's token on the map grid first so Roll20 adds them to the Turn Tracker correctly!">Roll</button>
+                        <span class="sheet-init-hint" style="font-size: 0.68em; color: var(--color-red); font-weight: 700; margin-top: 4px; display: block; text-transform: uppercase; letter-spacing: 0.3px;">Select token first!</span>
                     </div>
                 </div>
                 <div class="sheet-death-saves">
@@ -417,9 +422,26 @@
                     <div class="sheet-repeating-row sheet-weapon-row">
                         <input type="text" name="attr_weapon_name" placeholder="Weapon Name">
                         <div class="sheet-small-inputs">
-                            <label>Atk Mod <input type="number" name="attr_weapon_attack" value="0"></label>
-                            <label>Damage <input type="text" name="attr_weapon_damage" placeholder="1d8+3"></label>
-                            <label>M. Slots <input type="number" name="attr_weapon_materia" value="0"></label>
+                            <label>Ability 
+                                <select name="attr_weapon_ability" style="width: 70px;">
+                                    <option value="strength">STR</option>
+                                    <option value="dexterity">DEX</option>
+                                    <option value="intelligence">INT</option>
+                                    <option value="wisdom">WIS</option>
+                                    <option value="charisma">CHA</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </label>
+                            <label style="gap: 2px;">
+                                <input type="checkbox" name="attr_weapon_proficient" value="1" checked style="width: 14px; height: 14px; margin-right: 2px;"> Prof
+                            </label>
+                            <label>Die <input type="text" name="attr_weapon_die" placeholder="1d8" style="width: 50px;"></label>
+                            <label>Magic <input type="number" name="attr_weapon_magic" value="0" style="width: 40px;"></label>
+                            <label>M. Slots <input type="number" name="attr_weapon_materia" value="0" style="width: 40px;"></label>
+                        </div>
+                        <div class="sheet-small-inputs" style="margin-top: 6px;">
+                            <label>Atk Mod <input type="number" name="attr_weapon_attack" value="0" readonly style="width: 45px; font-weight: 700;"></label>
+                            <label>Damage <input type="text" name="attr_weapon_damage" placeholder="1d8+3" readonly style="width: 80px; font-weight: 700;"></label>
                         </div>
                         <textarea name="attr_weapon_desc" placeholder="Weapon description/properties..."></textarea>
                         <button type="roll" name="roll_attack" value="&amp;{template:default} {{name=@{weapon_name}}} {{Attack=[[1d20+@{weapon_attack}]]}} {{Damage=[[@{weapon_damage}]]}}">Attack</button>
@@ -715,7 +737,7 @@
     // Also triggers AC, attunement, and materia calc.
     // ----------------------------------------------------
     on("sheet:opened", function() {
-        getAttrs(["level", "xp", "pb", "dexterity", "spellcasting_ability", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(values) {
+        getAttrs(["level", "xp", "pb", "dexterity", "initiative_bonus", "spellcasting_ability", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(values) {
             let level = parseInt(values.level, 10) || 1;
             let xp = parseInt(values.xp, 10) || 0;
             let dex = parseInt(values.dexterity, 10) || 10;
@@ -742,7 +764,7 @@
                 "pb": newPb,
                 "level_up_alert": levelUpFlag,
                 "dexterity_mod": dexMod,
-                "initiative": dexMod,
+                "initiative": dexMod + (parseInt(values.initiative_bonus, 10) || 0),
                 "spell_mod": spellMod,
                 "spell_save_dc": 8 + newPb + spellMod,
                 "spell_attack_bonus": newPb + spellMod
@@ -750,6 +772,7 @@
             calculateAC();
             updateAttunement();
             calculateMateriaSlots();
+            calculateWeapons();
         });
     });
 
@@ -781,39 +804,44 @@
     // Abilities & Skills Auto-Calculation
     // ----------------------------------------------------
     abilities.forEach(ability => {
-        on(`change:${ability}`, function() {
+        on("change:" + ability, function() {
             // Fetch ability score, PB, save proficiency, and all skill prof + mastery flags
             let skillFields = Object.keys(skillAttrMap).filter(k => skillAttrMap[k] === ability);
-            let fieldsNeeded = [ability, "pb", `${ability}_save_prof`];
+            let fieldsNeeded = [ability, "pb", ability + "_save_prof"];
+            if (ability === "dexterity") {
+                fieldsNeeded.push("initiative_bonus");
+            }
             skillFields.forEach(s => {
-                fieldsNeeded.push(`${s}_prof`);
-                fieldsNeeded.push(`${s}_mastery`);
+                fieldsNeeded.push(s + "_prof");
+                fieldsNeeded.push(s + "_mastery");
             });
 
             getAttrs(fieldsNeeded, function(values) {
                 let modifier = calculateModifier(values[ability]);
                 let pb = parseInt(values.pb, 10) || 2;
                 
-                let updateObj = { [`${ability}_mod`]: modifier };
+                let updateObj = {};
+                updateObj[ability + "_mod"] = modifier;
 
                 // Recalculate saving throw for this ability
-                let saveProficient = parseInt(values[`${ability}_save_prof`], 10) || 0;
-                updateObj[`${ability}_save`] = modifier + (saveProficient * pb);
+                let saveProficient = parseInt(values[ability + "_save_prof"], 10) || 0;
+                updateObj[ability + "_save"] = modifier + (saveProficient * pb);
                 
                 // Update dependent skills — mastery adds a second PB on top of proficiency
                 for (const skill in skillAttrMap) {
                     if (skillAttrMap[skill] === ability) {
-                        let isProficient = parseInt(values[`${skill}_prof`], 10) || 0;
-                        let hasMastery = parseInt(values[`${skill}_mastery`], 10) || 0;
-                        // Skill total = ability_mod + (PB if proficient) + (PB again if mastery)
-                        let skillTotal = modifier + (isProficient * pb) + (hasMastery * pb);
+                        let isProficient = parseInt(values[skill + "_prof"], 10) || 0;
+                        let hasMastery = parseInt(values[skill + "_mastery"], 10) || 0;
+                        // Skill total = ability_mod + (PB if proficient) + (PB if mastery AND proficient)
+                        let skillTotal = modifier + (isProficient * pb) + (hasMastery * isProficient * pb);
                         updateObj[skill] = skillTotal;
                     }
                 }
                 
-                // If DEX changed, update Initiative
+                // If DEX changed, update Initiative (preserving any manual bonus from feats)
                 if (ability === "dexterity") {
-                    updateObj["initiative"] = modifier;
+                    let initBonus = parseInt(values.initiative_bonus, 10) || 0;
+                    updateObj["initiative"] = modifier + initBonus;
                 }
                 
                 setAttrs(updateObj);
@@ -821,12 +849,25 @@
         });
     });
 
+    // When initiative bonus changes (from feats like Alert), recalculate total initiative
+    on("change:initiative_bonus", function() {
+        getAttrs(["dexterity_mod", "initiative_bonus"], function(values) {
+            let dexMod = parseInt(values.dexterity_mod, 10) || 0;
+            let initBonus = parseInt(values.initiative_bonus, 10) || 0;
+            setAttrs({ "initiative": dexMod + initBonus });
+        });
+    });
+
     on("change:pb", function() {
-        let fieldsToGet = ["pb", ...abilities.map(a => `${a}_mod`), ...abilities.map(a => `${a}_save_prof`)];
+        let fieldsToGet = ["pb"].concat(
+            abilities.map(function(a) { return a + "_mod"; })
+        ).concat(
+            abilities.map(function(a) { return a + "_save_prof"; })
+        );
         // Also need mastery flags for all skills when PB changes
         for (const skill in skillAttrMap) {
-            fieldsToGet.push(`${skill}_prof`);
-            fieldsToGet.push(`${skill}_mastery`);
+            fieldsToGet.push(skill + "_prof");
+            fieldsToGet.push(skill + "_mastery");
         }
         
         getAttrs(fieldsToGet, function(values) {
@@ -846,7 +887,8 @@
                 let attrMod = parseInt(values[`${parentAttr}_mod`], 10) || 0;
                 let isProficient = parseInt(values[`${skill}_prof`], 10) || 0;
                 let hasMastery = parseInt(values[`${skill}_mastery`], 10) || 0;
-                updateObj[skill] = attrMod + (isProficient * pb) + (hasMastery * pb);
+                // Mastery only adds PB if character is also proficient
+                updateObj[skill] = attrMod + (isProficient * pb) + (hasMastery * isProficient * pb);
             }
             setAttrs(updateObj);
         });
@@ -862,8 +904,8 @@
                 let attrMod = parseInt(values[`${parentAttr}_mod`], 10) || 0;
                 let pb = parseInt(values.pb, 10) || 2;
                 
-                // Skill = ability_mod + (PB if proficient) + (PB if mastery/expertise)
-                let newVal = attrMod + (isProficient * pb) + (hasMastery * pb);
+                // Skill = ability_mod + (PB if proficient) + (PB if mastery AND proficient)
+                let newVal = attrMod + (isProficient * pb) + (hasMastery * isProficient * pb);
                 setAttrs({ [skill]: newVal });
             });
         });
@@ -880,8 +922,8 @@
                 let attrMod = parseInt(values[`${parentAttr}_mod`], 10) || 0;
                 let pb = parseInt(values.pb, 10) || 2;
                 
-                // Skill = ability_mod + (PB if proficient) + (PB if mastery/expertise)
-                let newVal = attrMod + (isProficient * pb) + (hasMastery * pb);
+                // Skill = ability_mod + (PB if proficient) + (PB if mastery AND proficient)
+                let newVal = attrMod + (isProficient * pb) + (hasMastery * isProficient * pb);
                 setAttrs({ [skill]: newVal });
             });
         });
@@ -1054,19 +1096,324 @@
     on("change:repeating_armor remove:repeating_armor change:repeating_weapons remove:repeating_weapons", calculateMateriaSlots);
 
     // ----------------------------------------------------
+    // Weapon Stats Auto-Calculation
+    // ----------------------------------------------------
+    const calculateWeapons = () => {
+        getSectionIDs("repeating_weapons", function(idArray) {
+            let fieldNames = ["pb", "strength_mod", "dexterity_mod", "intelligence_mod", "wisdom_mod", "charisma_mod"];
+            idArray.forEach(id => {
+                fieldNames.push(`repeating_weapons_${id}_weapon_ability`);
+                fieldNames.push(`repeating_weapons_${id}_weapon_proficient`);
+                fieldNames.push(`repeating_weapons_${id}_weapon_die`);
+                fieldNames.push(`repeating_weapons_${id}_weapon_magic`);
+            });
+
+            getAttrs(fieldNames, function(v) {
+                let pb = parseInt(v.pb, 10) || 2;
+                let mods = {
+                    strength: parseInt(v.strength_mod, 10) || 0,
+                    dexterity: parseInt(v.dexterity_mod, 10) || 0,
+                    intelligence: parseInt(v.intelligence_mod, 10) || 0,
+                    wisdom: parseInt(v.wisdom_mod, 10) || 0,
+                    charisma: parseInt(v.charisma_mod, 10) || 0,
+                    none: 0
+                };
+
+                let updateObj = {};
+                idArray.forEach(id => {
+                    let ability = v[`repeating_weapons_${id}_weapon_ability`] || "strength";
+                    let isProf = parseInt(v[`repeating_weapons_${id}_weapon_proficient`], 10) || 0;
+                    let die = v[`repeating_weapons_${id}_weapon_die`] || "1d8";
+                    let magic = parseInt(v[`repeating_weapons_${id}_weapon_magic`], 10) || 0;
+
+                    let abilityMod = mods[ability] || 0;
+                    let attackMod = abilityMod + (isProf ? pb : 0) + magic;
+                    let damageMod = abilityMod + magic;
+
+                    let damageStr = die;
+                    if (damageMod > 0) {
+                        damageStr += `+${damageMod}`;
+                    } else if (damageMod < 0) {
+                        damageStr += `-${Math.abs(damageMod)}`;
+                    }
+
+                    updateObj[`repeating_weapons_${id}_weapon_attack`] = attackMod;
+                    updateObj[`repeating_weapons_${id}_weapon_damage`] = damageStr;
+                });
+
+                setAttrs(updateObj);
+            });
+        });
+    };
+
+    // Wire weapon recalculation to all relevant changes
+    on("change:repeating_weapons:weapon_ability change:repeating_weapons:weapon_proficient change:repeating_weapons:weapon_die change:repeating_weapons:weapon_magic remove:repeating_weapons change:pb change:strength_mod change:dexterity_mod change:intelligence_mod change:wisdom_mod change:charisma_mod", calculateWeapons);
+
+    // ----------------------------------------------------
+    // Class-Based Starting Equipment Auto-Population
+    // ----------------------------------------------------
+    on("change:class", function() {
+        getAttrs(["class"], function(values) {
+            let className = (values.class || "").trim().toLowerCase();
+            if (!className) return;
+
+            // Only run if the character currently has no weapons or armor (meaning it is a new character)
+            getSectionIDs("repeating_weapons", function(weaponIds) {
+                getSectionIDs("repeating_armor", function(armorIds) {
+                    if (weaponIds.length > 0 || armorIds.length > 0) return;
+
+                    let updateObj = {};
+                    let w1 = generateRowID();
+                    let w2 = generateRowID();
+                    let w3 = generateRowID();
+                    let a1 = generateRowID();
+                    let a2 = generateRowID();
+                    let i1 = generateRowID();
+                    let i2 = generateRowID();
+                    let i3 = generateRowID();
+                    let i4 = generateRowID();
+                    let i5 = generateRowID();
+                    let i6 = generateRowID();
+
+                    if (className === "paladin") {
+                        // Weapons
+                        updateObj[`repeating_weapons_${w1}_weapon_name`] = "Longsword";
+                        updateObj[`repeating_weapons_${w1}_weapon_ability`] = "strength";
+                        updateObj[`repeating_weapons_${w1}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w1}_weapon_die`] = "1d8";
+                        updateObj[`repeating_weapons_${w1}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w1}_weapon_materia`] = 1;
+                        updateObj[`repeating_weapons_${w1}_weapon_desc`] = "Slashing, versatile (1d10)";
+
+                        updateObj[`repeating_weapons_${w2}_weapon_name`] = "Javelin";
+                        updateObj[`repeating_weapons_${w2}_weapon_ability`] = "strength";
+                        updateObj[`repeating_weapons_${w2}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w2}_weapon_die`] = "1d6";
+                        updateObj[`repeating_weapons_${w2}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_materia`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_desc`] = "Thrown (range 30/120)";
+
+                        // Armor
+                        updateObj[`repeating_armor_${a1}_armor_name`] = "Chain Mail";
+                        updateObj[`repeating_armor_${a1}_armor_type`] = "Heavy";
+                        updateObj[`repeating_armor_${a1}_armor_ac`] = 16;
+                        updateObj[`repeating_armor_${a1}_armor_equipped`] = 1;
+                        updateObj[`repeating_armor_${a1}_armor_materia`] = 2;
+
+                        updateObj[`repeating_armor_${a2}_armor_name`] = "Shield";
+                        updateObj[`repeating_armor_${a2}_armor_type`] = "Shield";
+                        updateObj[`repeating_armor_${a2}_armor_ac`] = 2;
+                        updateObj[`repeating_armor_${a2}_armor_equipped`] = 1;
+                        updateObj[`repeating_armor_${a2}_armor_materia`] = 0;
+
+                        // Inventory
+                        updateObj[`repeating_inventory_${i1}_item_name`] = "Explorer's Pack";
+                        updateObj[`repeating_inventory_${i1}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i1}_item_desc`] = "Contains backpack, bedroll, mess kit, tinderbox, 10 torches, 10 days of rations, waterskin, 50 feet of hempen rope.";
+
+                        updateObj[`repeating_inventory_${i2}_item_name`] = "Sleeping Bag";
+                        updateObj[`repeating_inventory_${i2}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i3}_item_name`] = "Potion";
+                        updateObj[`repeating_inventory_${i3}_item_qty`] = 2;
+                    } 
+                    else if (className === "cleric") {
+                        // Weapons
+                        updateObj[`repeating_weapons_${w1}_weapon_name`] = "Mace";
+                        updateObj[`repeating_weapons_${w1}_weapon_ability`] = "strength";
+                        updateObj[`repeating_weapons_${w1}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w1}_weapon_die`] = "1d6";
+                        updateObj[`repeating_weapons_${w1}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w1}_weapon_materia`] = 2;
+                        updateObj[`repeating_weapons_${w1}_weapon_desc`] = "Simple melee weapon, bludgeoning.";
+
+                        updateObj[`repeating_weapons_${w2}_weapon_name`] = "Light Crossbow";
+                        updateObj[`repeating_weapons_${w2}_weapon_ability`] = "dexterity";
+                        updateObj[`repeating_weapons_${w2}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w2}_weapon_die`] = "1d8";
+                        updateObj[`repeating_weapons_${w2}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_materia`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_desc`] = "Two-handed, ranged 80/320, loading.";
+
+                        // Armor
+                        updateObj[`repeating_armor_${a1}_armor_name`] = "Scale Mail";
+                        updateObj[`repeating_armor_${a1}_armor_type`] = "Medium";
+                        updateObj[`repeating_armor_${a1}_armor_ac`] = 14;
+                        updateObj[`repeating_armor_${a1}_armor_equipped`] = 1;
+                        updateObj[`repeating_armor_${a1}_armor_materia`] = 2;
+                        updateObj[`repeating_armor_${a1}_armor_desc`] = "Medium armor. AC: 14 + DEX modifier (max +2). Stealth: Disadvantage. Weight: 45 lb.";
+
+                        updateObj[`repeating_armor_${a2}_armor_name`] = "Shield";
+                        updateObj[`repeating_armor_${a2}_armor_type`] = "Shield";
+                        updateObj[`repeating_armor_${a2}_armor_ac`] = 2;
+                        updateObj[`repeating_armor_${a2}_armor_equipped`] = 1;
+                        updateObj[`repeating_armor_${a2}_armor_materia`] = 0;
+                        updateObj[`repeating_armor_${a2}_armor_desc`] = "Shield (+2 AC).";
+
+                        // Inventory
+                        updateObj[`repeating_inventory_${i1}_item_name`] = "Priest's Pack";
+                        updateObj[`repeating_inventory_${i1}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i1}_item_desc`] = "Contains: backpack, blanket, 10 candles, tinderbox, alms box, 2 incense blocks, censer, vestments, 2 days rations, waterskin.";
+
+                        updateObj[`repeating_inventory_${i2}_item_name`] = "Sleeping Bag";
+                        updateObj[`repeating_inventory_${i2}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i3}_item_name`] = "Holy Symbol";
+                        updateObj[`repeating_inventory_${i3}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i4}_item_name`] = "Potion of Healing";
+                        updateObj[`repeating_inventory_${i4}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i4}_item_desc`] = "Restores 2d4+2 hit points.";
+
+                        updateObj[`repeating_inventory_${i5}_item_name`] = "Crossbow Bolts";
+                        updateObj[`repeating_inventory_${i5}_item_qty`] = 20;
+                    } 
+                    else if (className === "rogue") {
+                        // Weapons
+                        updateObj[`repeating_weapons_${w1}_weapon_name`] = "Rapier";
+                        updateObj[`repeating_weapons_${w1}_weapon_ability`] = "dexterity";
+                        updateObj[`repeating_weapons_${w1}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w1}_weapon_die`] = "1d8";
+                        updateObj[`repeating_weapons_${w1}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w1}_weapon_materia`] = 1;
+                        updateObj[`repeating_weapons_${w1}_weapon_desc`] = "Finesse melee weapon, piercing.";
+
+                        updateObj[`repeating_weapons_${w2}_weapon_name`] = "Shortbow";
+                        updateObj[`repeating_weapons_${w2}_weapon_ability`] = "dexterity";
+                        updateObj[`repeating_weapons_${w2}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w2}_weapon_die`] = "1d6";
+                        updateObj[`repeating_weapons_${w2}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_materia`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_desc`] = "Two-handed, ranged 80/320, piercing.";
+
+                        updateObj[`repeating_weapons_${w3}_weapon_name`] = "Dagger";
+                        updateObj[`repeating_weapons_${w3}_weapon_ability`] = "dexterity";
+                        updateObj[`repeating_weapons_${w3}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w3}_weapon_die`] = "1d4";
+                        updateObj[`repeating_weapons_${w3}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w3}_weapon_materia`] = 0;
+                        updateObj[`repeating_weapons_${w3}_weapon_desc`] = "Finesse, light, thrown 20/60.";
+
+                        // Armor
+                        updateObj[`repeating_armor_${a1}_armor_name`] = "Leather Armor";
+                        updateObj[`repeating_armor_${a1}_armor_type`] = "Light";
+                        updateObj[`repeating_armor_${a1}_armor_ac`] = 11;
+                        updateObj[`repeating_armor_${a1}_armor_equipped`] = 1;
+                        updateObj[`repeating_armor_${a1}_armor_materia`] = 2;
+                        updateObj[`repeating_armor_${a1}_armor_desc`] = "Light armor. AC: 11 + DEX modifier. Weight: 10 lb.";
+
+                        // Inventory
+                        updateObj[`repeating_inventory_${i1}_item_name`] = "Burglar's Pack";
+                        updateObj[`repeating_inventory_${i1}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i1}_item_desc`] = "Contains: backpack, ball bearings (1,000), string (10 ft), bell, 5 candles, crowbar, hammer, 10 pitons, hooded lantern, 2 oil flasks, 5 days rations, tinderbox, waterskin, 50 ft rope.";
+
+                        updateObj[`repeating_inventory_${i2}_item_name`] = "Sleeping Bag";
+                        updateObj[`repeating_inventory_${i2}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i3}_item_name`] = "Thieves' tools";
+                        updateObj[`repeating_inventory_${i3}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i4}_item_name`] = "Potion of Healing";
+                        updateObj[`repeating_inventory_${i4}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i4}_item_desc`] = "Restores 2d4+2 hit points.";
+
+                        updateObj[`repeating_inventory_${i5}_item_name`] = "Daggers (Additional)";
+                        updateObj[`repeating_inventory_${i5}_item_qty`] = 2;
+                        updateObj[`repeating_inventory_${i5}_item_desc`] = "Simple finesse, light weapons.";
+
+                        updateObj[`repeating_inventory_${i6}_item_name`] = "Shortbow Arrows";
+                        updateObj[`repeating_inventory_${i6}_item_qty`] = 20;
+                    } 
+                    else if (className === "wizard") {
+                        // Weapons
+                        updateObj[`repeating_weapons_${w1}_weapon_name`] = "Fire Bolt";
+                        updateObj[`repeating_weapons_${w1}_weapon_ability`] = "intelligence";
+                        updateObj[`repeating_weapons_${w1}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w1}_weapon_die`] = "1d10";
+                        updateObj[`repeating_weapons_${w1}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w1}_weapon_materia`] = 2;
+                        updateObj[`repeating_weapons_${w1}_weapon_desc`] = "Ranged spell attack (fire damage).";
+
+                        updateObj[`repeating_weapons_${w2}_weapon_name`] = "Quarterstaff";
+                        updateObj[`repeating_weapons_${w2}_weapon_ability`] = "strength";
+                        updateObj[`repeating_weapons_${w2}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w2}_weapon_die`] = "1d6";
+                        updateObj[`repeating_weapons_${w2}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_materia`] = 0;
+                        updateObj[`repeating_weapons_${w2}_weapon_desc`] = "Simple melee weapon, versatile (1d8).";
+
+                        updateObj[`repeating_weapons_${w3}_weapon_name`] = "Dagger";
+                        updateObj[`repeating_weapons_${w3}_weapon_ability`] = "dexterity";
+                        updateObj[`repeating_weapons_${w3}_weapon_proficient`] = 1;
+                        updateObj[`repeating_weapons_${w3}_weapon_die`] = "1d4";
+                        updateObj[`repeating_weapons_${w3}_weapon_magic`] = 0;
+                        updateObj[`repeating_weapons_${w3}_weapon_materia`] = 0;
+                        updateObj[`repeating_weapons_${w3}_weapon_desc`] = "Finesse, light, thrown 20/60.";
+
+                        // Inventory
+                        updateObj[`repeating_inventory_${i1}_item_name`] = "Scholar's Pack";
+                        updateObj[`repeating_inventory_${i1}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i1}_item_desc`] = "Contains: backpack, book of lore, ink bottle, ink pen, 10 sheets of parchment, small sand bag, small knife.";
+
+                        updateObj[`repeating_inventory_${i2}_item_name`] = "Sleeping Bag";
+                        updateObj[`repeating_inventory_${i2}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i3}_item_name`] = "Arcane Focus";
+                        updateObj[`repeating_inventory_${i3}_item_qty`] = 1;
+
+                        updateObj[`repeating_inventory_${i4}_item_name`] = "Spellbook";
+                        updateObj[`repeating_inventory_${i4}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i4}_item_desc`] = "Arcane reference for wizard spells.";
+
+                        updateObj[`repeating_inventory_${i5}_item_name`] = "Potion of Healing";
+                        updateObj[`repeating_inventory_${i5}_item_qty`] = 1;
+                        updateObj[`repeating_inventory_${i5}_item_desc`] = "Restores 2d4+2 hit points.";
+                    }
+
+                    if (Object.keys(updateObj).length > 0) {
+                        setAttrs(updateObj, function() {
+                            // After pre-equipping, trigger necessary sheets recalcs
+                            calculateAC();
+                            calculateMateriaSlots();
+                            calculateWeapons();
+                        });
+                    }
+                });
+            });
+        });
+    });
+
+
+    // ----------------------------------------------------
     // JSON Character Import
     // ----------------------------------------------------
     on("clicked:import_json", function() {
         getAttrs(["import_data"], function(values) {
-            if (!values.import_data) return;
-            try {
-                let parsed = JSON.parse(values.import_data);
-                // Clear the import data field
-                parsed["import_data"] = "";
-                setAttrs(parsed);
-            } catch (e) {
-                console.error("Roll20 Sheet JSON Import Error:", e);
+            // Check if there is any data to import
+            if (!values.import_data) {
+                setAttrs({ "import_status": "ERROR: No data in the import box." });
+                return;
             }
+
+            // Try to parse the JSON — report errors visibly
+            var parsed;
+            try {
+                parsed = JSON.parse(values.import_data);
+            } catch (e) {
+                setAttrs({ "import_status": "JSON PARSE ERROR: " + e.message });
+                return;
+            }
+
+            // Report what we found
+            var keyCount = Object.keys(parsed).length;
+            var charName = parsed.character_name || "(unnamed)";
+
+            // Clear the import box and set status message
+            parsed["import_data"] = "";
+            parsed["import_status"] = "OK: Imported " + charName + " (" + keyCount + " fields). Close and reopen sheet to recalculate.";
+
+            // Simple setAttrs — this is what worked in the original commit
+            setAttrs(parsed);
         });
     });
 

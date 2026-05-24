@@ -395,6 +395,11 @@
     border-color: #f9a825;
 }
 
+.sheet-stat-bubble-gold input[type="number"] {
+    max-width: 85px !important;
+    width: 100%;
+}
+
 .sheet-flex-center {
     display: flex;
     align-items: center;
