@@ -345,7 +345,10 @@
                 <h3 class="sheet-sub-header">Items</h3>
                 <fieldset class="repeating_inventory">
                     <div class="sheet-repeating-row">
-                        <input type="text" name="attr_item_name" placeholder="Item Name">
+                        <div class="sheet-flex-center" style="gap: 5px;">
+                            <input type="text" name="attr_item_name" placeholder="Item Name" style="flex: 1;">
+                            <button type="action" name="act_delete" class="sheet-btn-trash" title="Delete Item">&#128465;</button>
+                        </div>
                         <div class="sheet-small-inputs">
                             <label>Qty <input type="number" name="attr_item_qty" value="1"></label>
                             <label>Weight <input type="number" name="attr_item_weight" value="0"></label>
@@ -429,6 +432,7 @@
                         <div class="sheet-flex-center" style="justify-content: flex-start; gap: 8px;">
                             <input type="checkbox" name="attr_armor_equipped" value="1" title="Equipped" class="sheet-equip-checkbox">
                             <input type="text" name="attr_armor_name" placeholder="Armor Name" style="flex:1;">
+                            <button type="action" name="act_delete" class="sheet-btn-trash" title="Delete Armor">&#128465;</button>
                         </div>
                         <div class="sheet-small-inputs">
                             <label>Type 
@@ -453,7 +457,10 @@
                 <h2>Weapons</h2>
                 <fieldset class="repeating_weapons">
                     <div class="sheet-repeating-row sheet-weapon-row">
-                        <input type="text" name="attr_weapon_name" placeholder="Weapon Name">
+                        <div class="sheet-flex-center" style="gap: 5px;">
+                            <input type="text" name="attr_weapon_name" placeholder="Weapon Name" style="flex: 1;">
+                            <button type="action" name="act_delete" class="sheet-btn-trash" title="Delete Weapon">&#128465;</button>
+                        </div>
                         <div class="sheet-small-inputs">
                             <label>Ability 
                                 <select name="attr_weapon_ability" style="width: 70px;">
@@ -1415,6 +1422,22 @@
 
             // Simple setAttrs — this is what worked in the original commit
             setAttrs(parsed);
+        });
+    });
+
+    // ----------------------------------------------------
+    // Custom Trash Can Delete Buttons
+    // ----------------------------------------------------
+    const sectionsWithDelete = ["inventory", "weapons", "armor"];
+    sectionsWithDelete.forEach(function(section) {
+        on("clicked:repeating_" + section + ":delete", function(eventInfo) {
+            // sourceAttribute looks like: "repeating_inventory_-MyRowId123_delete"
+            // We need to extract the row prefix "repeating_inventory_-MyRowId123"
+            var attrName = eventInfo.sourceAttribute;
+            if (attrName) {
+                var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
+                removeRepeatingRow(rowPrefix);
+            }
         });
     });
 

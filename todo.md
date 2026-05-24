@@ -46,3 +46,5 @@
 - [x] 2026-05-24 17:33:00 - BUG [MEDIUM]: Refactor Dexterity change handler in abilities loop to eliminate nested getAttrs and duplicate setAttrs calls. COMPLETE 2026-05-24 17:34:00
 - [x] 2026-05-24 17:42:00 - BUG [CRITICAL]: Fix JSON files using uppercase row IDs (-W) which silently crashes setAttrs. Lowercased to -w. COMPLETE 2026-05-24 17:43:00
 - [x] 2026-05-24 17:52:00 - Create Roll20_Gotchas_Guide.md to document sandbox restrictions and UI quirks (e.g., textarea blur bug, lowercase setAttrs bug). COMPLETE 2026-05-24 17:55:00
+- [x] 2026-05-24 17:55:00 - TASK: Reorganize sheet layout (Inventory to Column 1, Class Features/Species Traits/Feats to Column 3) to prevent middle column bloat. COMPLETE 2026-05-24 17:56:00
+- [x] 2026-05-24 17:58:00 - TASK: Add custom inline Action buttons (Trash Cans) to repeating Inventory, Weapons, and Armor rows using new removeRepeatingRow() API. COMPLETE 2026-05-24 17:59:00

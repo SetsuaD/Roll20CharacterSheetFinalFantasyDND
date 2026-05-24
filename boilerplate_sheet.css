@@ -666,6 +666,23 @@
     border-bottom: none;
 }
 
+.sheet-btn-trash {
+    background: transparent;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 2px 6px;
+    color: var(--color-grey-dark);
+    transition: transform 0.15s ease, color 0.15s ease;
+    border-radius: 4px;
+}
+
+.sheet-btn-trash:hover {
+    color: var(--color-red);
+    transform: scale(1.15);
+    background: rgba(255, 0, 0, 0.05);
+}
+
 .sheet-weapon-row {
     background: var(--color-cream);
     padding: 10px;
