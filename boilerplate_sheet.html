@@ -333,6 +333,39 @@
                 <textarea name="attr_backstory" placeholder="History, traits, ideals, bonds, flaws..."></textarea>
             </div>
 
+            <!-- Equipment & Inventory -->
+            <div class="sheet-section-box">
+                <h2>Inventory</h2>
+                <div class="sheet-stat-row">
+                    <div class="sheet-stat-bubble sheet-stat-bubble-gold">
+                        <label>Gold (GP)</label>
+                        <input type="number" name="attr_gp" value="0">
+                    </div>
+                </div>
+                <h3 class="sheet-sub-header">Items</h3>
+                <fieldset class="repeating_inventory">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_item_name" placeholder="Item Name">
+                        <div class="sheet-small-inputs">
+                            <label>Qty <input type="number" name="attr_item_qty" value="1"></label>
+                            <label>Weight <input type="number" name="attr_item_weight" value="0"></label>
+                        </div>
+                        <textarea name="attr_item_desc" placeholder="Description..."></textarea>
+                    </div>
+                </fieldset>
+
+                <h3 class="sheet-sub-header">Magic Item Attunement</h3>
+                <div class="sheet-input-group">
+                    <label>Attuned Slots Used (Including Job Stones)</label>
+                    <input type="text" name="attr_attunement_tracker" value="0 / 3" readonly class="sheet-attunement-tracker">
+                </div>
+                <fieldset class="repeating_attunement">
+                    <div class="sheet-repeating-row">
+                        <input type="text" name="attr_attuned_item" placeholder="Item Name">
+                    </div>
+                </fieldset>
+            </div>
+
         </div>
 
         <!-- ================================================ -->
@@ -449,6 +482,41 @@
                 </fieldset>
             </div>
 
+            <!-- Equipment Training & Proficiencies -->
+            <div class="sheet-section-box">
+                <h2>Equipment Training & Proficiencies</h2>
+                <div class="sheet-armor-prof">
+                    <label>Armor:</label>
+                    <input type="checkbox" name="attr_prof_light" value="1"> Light
+                    <input type="checkbox" name="attr_prof_medium" value="1"> Medium
+                    <input type="checkbox" name="attr_prof_heavy" value="1"> Heavy
+                    <input type="checkbox" name="attr_prof_shield" value="1"> Shields
+                </div>
+                <div class="sheet-input-group">
+                    <label>Training / Other</label>
+                    <textarea name="attr_prof_training" placeholder="e.g. Vehicles..."></textarea>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Weapons</label>
+                    <textarea name="attr_prof_weapons" placeholder="e.g. Simple Weapons, Martial Weapons..."></textarea>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Tools</label>
+                    <textarea name="attr_prof_tools" placeholder="e.g. Thieves' Tools..."></textarea>
+                </div>
+                <div class="sheet-input-group">
+                    <label>Languages</label>
+                    <textarea name="attr_languages" placeholder="e.g. Common, Elvish..."></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================================================ -->
+        <!-- COLUMN 3: Magic, Materia, Summons, Inventory     -->
+        <!-- ================================================ -->
+        <div class="sheet-column">
+
             <!-- Class Features -->
             <div class="sheet-section-box">
                 <h2>Class Features</h2>
@@ -482,73 +550,6 @@
                 </fieldset>
             </div>
 
-            <!-- Equipment Training & Proficiencies -->
-            <div class="sheet-section-box">
-                <h2>Equipment Training & Proficiencies</h2>
-                <div class="sheet-armor-prof">
-                    <label>Armor:</label>
-                    <input type="checkbox" name="attr_prof_light" value="1"> Light
-                    <input type="checkbox" name="attr_prof_medium" value="1"> Medium
-                    <input type="checkbox" name="attr_prof_heavy" value="1"> Heavy
-                    <input type="checkbox" name="attr_prof_shield" value="1"> Shields
-                </div>
-                <div class="sheet-input-group">
-                    <label>Training / Other</label>
-                    <textarea name="attr_prof_training" placeholder="e.g. Vehicles..."></textarea>
-                </div>
-                <div class="sheet-input-group">
-                    <label>Weapons</label>
-                    <textarea name="attr_prof_weapons" placeholder="e.g. Simple Weapons, Martial Weapons..."></textarea>
-                </div>
-                <div class="sheet-input-group">
-                    <label>Tools</label>
-                    <textarea name="attr_prof_tools" placeholder="e.g. Thieves' Tools..."></textarea>
-                </div>
-                <div class="sheet-input-group">
-                    <label>Languages</label>
-                    <textarea name="attr_languages" placeholder="e.g. Common, Elvish..."></textarea>
-                </div>
-            </div>
-
-            <!-- Equipment & Inventory -->
-            <div class="sheet-section-box">
-                <h2>Inventory</h2>
-                <div class="sheet-stat-row">
-                    <div class="sheet-stat-bubble sheet-stat-bubble-gold">
-                        <label>Gold (GP)</label>
-                        <input type="number" name="attr_gp" value="0">
-                    </div>
-                </div>
-                <h3 class="sheet-sub-header">Items</h3>
-                <fieldset class="repeating_inventory">
-                    <div class="sheet-repeating-row">
-                        <input type="text" name="attr_item_name" placeholder="Item Name">
-                        <div class="sheet-small-inputs">
-                            <label>Qty <input type="number" name="attr_item_qty" value="1"></label>
-                            <label>Weight <input type="number" name="attr_item_weight" value="0"></label>
-                        </div>
-                        <textarea name="attr_item_desc" placeholder="Description..."></textarea>
-                    </div>
-                </fieldset>
-
-                <h3 class="sheet-sub-header">Magic Item Attunement</h3>
-                <div class="sheet-input-group">
-                    <label>Attuned Slots Used (Including Job Stones)</label>
-                    <input type="text" name="attr_attunement_tracker" value="0 / 3" readonly class="sheet-attunement-tracker">
-                </div>
-                <fieldset class="repeating_attunement">
-                    <div class="sheet-repeating-row">
-                        <input type="text" name="attr_attuned_item" placeholder="Item Name">
-                    </div>
-                </fieldset>
-            </div>
-
-        </div>
-
-        <!-- ================================================ -->
-        <!-- COLUMN 3: Magic, Materia, Summons, Inventory     -->
-        <!-- ================================================ -->
-        <div class="sheet-column">
 
             <!-- Spellcasting Section -->
             <div class="sheet-section-box sheet-theme-magic">
