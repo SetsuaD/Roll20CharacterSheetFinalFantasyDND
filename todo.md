@@ -44,4 +44,5 @@
 - [x] 2026-05-24 17:07:00 - BUG [CRITICAL]: JSON import handler broke all sheet workers. Rewrote to avoid try/catch around async callbacks, use var instead of let, concat instead of spread for getAttrs field list, and separate JSON parse from setAttrs call. COMPLETE 2026-05-24 17:08:00
 - [x] 2026-05-24 17:33:00 - BUG [CRITICAL]: Fix silent compile crash of Roll20 Sheet Worker caused by ES6 spread operator on line 860. Replace spread operator with standard concat syntax. COMPLETE 2026-05-24 17:34:00
 - [x] 2026-05-24 17:33:00 - BUG [MEDIUM]: Refactor Dexterity change handler in abilities loop to eliminate nested getAttrs and duplicate setAttrs calls. COMPLETE 2026-05-24 17:34:00
-
+- [x] 2026-05-24 17:42:00 - BUG [CRITICAL]: Fix JSON files using uppercase row IDs (-W) which silently crashes setAttrs. Lowercased to -w. COMPLETE 2026-05-24 17:43:00
+- [x] 2026-05-24 17:52:00 - Create Roll20_Gotchas_Guide.md to document sandbox restrictions and UI quirks (e.g., textarea blur bug, lowercase setAttrs bug). COMPLETE 2026-05-24 17:55:00
