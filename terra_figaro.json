@@ -75,14 +75,14 @@
   "repeating_inventory_-i000000000000000009_item_desc": "Contains: backpack, book of lore, ink bottle, ink pen, 10 sheets of parchment, small sand bag, small knife.",
   "repeating_materia_-m_shield_materia_name": "Barrier",
   "repeating_materia_-m_shield_materia_spell": "Shield",
-  "repeating_materia_-m_shield_materia_source": "Armor",
-  "repeating_materia_-m_shield_materia_mp_cost": "3",
+  "repeating_materia_-m_shield_materia_source": "Shealth",
+  "repeating_materia_-m_shield_materia_mp_cost": "1",
   "repeating_materia_-m_shield_materia_slot_cost": "1",
-  "repeating_materia_-m_shield_materia_desc": "Reaction when hit by an attack or Magic Missile. You create an invisible barrier of magical force. Until the start of your next turn, you gain a +5 bonus to AC, including against the triggering attack, and you take no damage from Magic Missile.",
+  "repeating_materia_-m_shield_materia_desc": "1st-level Abjuration\nCasting Time: 1 reaction, which you take when you are hit by an attack or targeted by the spell Magic Missile\nRange: Self\nComponents: V, S\nDuration: 1 round\n\nAn invisible barrier of magical force appears and protects you.\n\nUntil the start of your next turn, you have:\n+5 bonus to AC\nincluding against the triggering attack.\n\nYou take no damage from:\nMagic Missile",
   "repeating_materia_-m_missile_materia_name": "Comet",
   "repeating_materia_-m_missile_materia_spell": "Magic Missile",
-  "repeating_materia_-m_missile_materia_source": "Weapon",
-  "repeating_materia_-m_missile_materia_mp_cost": "3",
+  "repeating_materia_-m_missile_materia_source": "dagger",
+  "repeating_materia_-m_missile_materia_mp_cost": "1",
   "repeating_materia_-m_missile_materia_slot_cost": "1",
-  "repeating_materia_-m_missile_materia_desc": "Action. 120 ft. You create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range. Each dart deals 1d4 + 1 Force damage. The darts all strike simultaneously."
+  "repeating_materia_-m_missile_materia_desc": "1st-level Evocation\nCasting Time: 1 action\nRange: 120 feet\nComponents: V, S\nDuration: Instantaneous\n\nYou create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range.\nA dart deals: 1d4 + 1 force damage.\nThe darts all strike simultaneously, and you can direct them to hit one creature or several.\n\nAt Higher Levels: When you cast this spell using additional MP, the spell creates one more dart for each extra MP spent above 1."
 }
