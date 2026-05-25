@@ -666,6 +666,43 @@
     border-bottom: none;
 }
 
+.sheet-btn-add {
+    background: var(--color-blue-dark);
+    color: var(--color-white);
+    border: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 10px;
+    height: 30px;
+    border-radius: var(--radius-small);
+    transition: background 0.15s ease;
+}
+
+.sheet-btn-add:hover {
+    background: var(--color-blue-light);
+}
+
+.sheet-btn-roll::before {
+    font-family: 'dicefontd20';
+    content: 't';
+    font-size: 1.2em;
+}
+
+.sheet-btn-roll {
+    background: transparent;
+    color: var(--color-blue-dark);
+    border: none;
+    cursor: pointer;
+    padding: 2px 5px;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.sheet-btn-roll:hover {
+    color: var(--color-blue-light);
+    transform: scale(1.1);
+}
+
 .sheet-btn-trash {
     background: transparent;
     border: none;

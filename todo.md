@@ -48,3 +48,5 @@
 - [x] 2026-05-24 17:52:00 - Create Roll20_Gotchas_Guide.md to document sandbox restrictions and UI quirks (e.g., textarea blur bug, lowercase setAttrs bug). COMPLETE 2026-05-24 17:55:00
 - [x] 2026-05-24 17:55:00 - TASK: Reorganize sheet layout (Inventory to Column 1, Class Features/Species Traits/Feats to Column 3) to prevent middle column bloat. COMPLETE 2026-05-24 17:56:00
 - [x] 2026-05-24 17:58:00 - TASK: Add custom inline Action buttons (Trash Cans) to repeating Inventory, Weapons, and Armor rows using new removeRepeatingRow() API. COMPLETE 2026-05-24 17:59:00
+- [x] 2026-05-25 03:39:00 - TASK: Implement dynamic Cantrip dropdown selector that automatically populates repeating row with D&D 2024 spell descriptions and auto-scaling roll buttons (Fire Bolt, Mind Sliver, Toll the Dead). COMPLETE 2026-05-25 03:39:00
+- [x] 2026-05-25 03:39:00 - TASK: Update terra_figaro.json and cecil_highwind.json with D&D 2024 Shield and Magic Missile materia. COMPLETE 2026-05-25 03:39:00

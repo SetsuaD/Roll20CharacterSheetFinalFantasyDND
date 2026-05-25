@@ -588,10 +588,24 @@
                 </div>
 
                 <h3 class="sheet-sub-header">Cantrips</h3>
+                <div class="sheet-flex-center" style="gap: 5px; margin-bottom: 10px;">
+                    <select name="attr_cantrip_selector" style="flex: 1;">
+                        <option value="none">-- Select Cantrip to Add --</option>
+                        <option value="fire_bolt">Fire Bolt</option>
+                        <option value="mind_sliver">Mind Sliver</option>
+                        <option value="toll_the_dead">Toll the Dead</option>
+                    </select>
+                    <button type="action" name="act_add_cantrip" class="sheet-btn-add" title="Add Cantrip">+</button>
+                </div>
                 <fieldset class="repeating_cantrips">
                     <div class="sheet-repeating-row sheet-weapon-row">
-                        <input type="text" name="attr_cantrip_name" placeholder="Cantrip Name">
-                        <textarea name="attr_cantrip_effect" placeholder="Spell Effect..."></textarea>
+                        <div class="sheet-flex-center" style="gap: 5px;">
+                            <button type="roll" name="roll_cantrip" value="@{cantrip_roll_formula}" class="sheet-btn-roll"></button>
+                            <input type="text" name="attr_cantrip_name" placeholder="Cantrip Name" style="flex: 1;" readonly>
+                            <input type="hidden" name="attr_cantrip_roll_formula" value="">
+                            <button type="action" name="act_delete" class="sheet-btn-trash" title="Delete Cantrip">&#128465;</button>
+                        </div>
+                        <textarea name="attr_cantrip_effect" placeholder="Spell Effect..." readonly></textarea>
                     </div>
                 </fieldset>
             </div>
@@ -1428,16 +1442,56 @@
     // ----------------------------------------------------
     // Custom Trash Can Delete Buttons
     // ----------------------------------------------------
-    const sectionsWithDelete = ["inventory", "weapons", "armor"];
+    const sectionsWithDelete = ["inventory", "weapons", "armor", "cantrips"];
     sectionsWithDelete.forEach(function(section) {
         on("clicked:repeating_" + section + ":delete", function(eventInfo) {
-            // sourceAttribute looks like: "repeating_inventory_-MyRowId123_delete"
-            // We need to extract the row prefix "repeating_inventory_-MyRowId123"
             var attrName = eventInfo.sourceAttribute;
             if (attrName) {
                 var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
                 removeRepeatingRow(rowPrefix);
             }
+        });
+    });
+
+    // ----------------------------------------------------
+    // Cantrip Adder
+    // ----------------------------------------------------
+    const CANTRIP_DB = {
+        "fire_bolt": {
+            name: "Fire Bolt",
+            effect: "You hurl a mote of fire at a creature or an object within range (120 ft). Make a ranged spell attack against the target. On a hit, the target takes Fire damage. A flammable object hit by this spell ignites if it isn't being worn or carried.",
+            formula: "&{template:default} {{name=@{character_name} casts Fire Bolt}} {{Attack=[[1d20 + @{spell_attack_bonus}]]}} {{Damage=[[ [[ceil((@{level} + 2) / 6)]]d10 ]] Fire}}"
+        },
+        "mind_sliver": {
+            name: "Mind Sliver",
+            effect: "You drive a disorienting spike of psychic energy into the mind of one creature within 60 ft. The target must succeed on an Intelligence saving throw (DC @{spell_save_dc}). On a failed save, it takes Psychic damage and must subtract 1d4 from the next saving throw it makes before the end of your next turn.",
+            formula: "&{template:default} {{name=@{character_name} casts Mind Sliver}} {{Save=Intelligence DC @{spell_save_dc}}} {{Damage=[[ [[ceil((@{level} + 2) / 6)]]d6 ]] Psychic}} {{Effect=-1d4 to next save before end of your next turn}}"
+        },
+        "toll_the_dead": {
+            name: "Toll the Dead",
+            effect: "You point at one creature within 60 ft, and the sound of a dolorous bell fills the air. The target must succeed on a Wisdom saving throw (DC @{spell_save_dc}) or take Necrotic damage. If the target is missing any of its Hit Points, the damage uses d12s instead of d8s.",
+            formula: "&{template:default} {{name=@{character_name} casts Toll the Dead}} {{Save=Wisdom DC @{spell_save_dc}}} {{Damage (Healthy)=[[ [[ceil((@{level} + 2) / 6)]]d8 ]] Necrotic}} {{Damage (Injured)=[[ [[ceil((@{level} + 2) / 6)]]d12 ]] Necrotic}}"
+        }
+    };
+
+    on("clicked:add_cantrip", function() {
+        getAttrs(["cantrip_selector"], function(values) {
+            var selected = values.cantrip_selector;
+            if (!selected || selected === "none" || !CANTRIP_DB[selected]) return;
+
+            var dbEntry = CANTRIP_DB[selected];
+            var newRowId = generateRowID();
+            var prefix = "repeating_cantrips_" + newRowId + "_";
+            
+            var update = {};
+            update[prefix + "cantrip_name"] = dbEntry.name;
+            update[prefix + "cantrip_effect"] = dbEntry.effect;
+            update[prefix + "cantrip_roll_formula"] = dbEntry.formula;
+            
+            // Reset dropdown
+            update["cantrip_selector"] = "none";
+
+            setAttrs(update);
         });
     });
 

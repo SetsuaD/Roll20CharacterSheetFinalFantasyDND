@@ -72,5 +72,17 @@
   "repeating_inventory_-i000000000000000008_item_qty": 1,
   "repeating_inventory_-i000000000000000009_item_name": "Scholar's Pack",
   "repeating_inventory_-i000000000000000009_item_qty": 1,
-  "repeating_inventory_-i000000000000000009_item_desc": "Contains: backpack, book of lore, ink bottle, ink pen, 10 sheets of parchment, small sand bag, small knife."
+  "repeating_inventory_-i000000000000000009_item_desc": "Contains: backpack, book of lore, ink bottle, ink pen, 10 sheets of parchment, small sand bag, small knife.",
+  "repeating_materia_-m_shield_materia_name": "Barrier",
+  "repeating_materia_-m_shield_materia_spell": "Shield",
+  "repeating_materia_-m_shield_materia_source": "Armor",
+  "repeating_materia_-m_shield_materia_mp_cost": "3",
+  "repeating_materia_-m_shield_materia_slot_cost": "1",
+  "repeating_materia_-m_shield_materia_desc": "Reaction when hit by an attack or Magic Missile. You create an invisible barrier of magical force. Until the start of your next turn, you gain a +5 bonus to AC, including against the triggering attack, and you take no damage from Magic Missile.",
+  "repeating_materia_-m_missile_materia_name": "Comet",
+  "repeating_materia_-m_missile_materia_spell": "Magic Missile",
+  "repeating_materia_-m_missile_materia_source": "Weapon",
+  "repeating_materia_-m_missile_materia_mp_cost": "3",
+  "repeating_materia_-m_missile_materia_slot_cost": "1",
+  "repeating_materia_-m_missile_materia_desc": "Action. 120 ft. You create three glowing darts of magical force. Each dart hits a creature of your choice that you can see within range. Each dart deals 1d4 + 1 Force damage. The darts all strike simultaneously."
 }
