@@ -580,10 +580,12 @@
                     <div class="sheet-stat-bubble">
                         <label>Save DC</label>
                         <input type="number" name="attr_spell_save_dc" value="8" readonly>
+                        <label style="font-size: 0.7em; margin-top: 2px;">Bonus <input type="number" name="attr_spell_save_dc_bonus" value="0" style="width: 40px;"></label>
                     </div>
                     <div class="sheet-stat-bubble">
                         <label>Attack Bonus</label>
                         <input type="number" name="attr_spell_attack_bonus" value="0" readonly>
+                        <label style="font-size: 0.7em; margin-top: 2px;">Bonus <input type="number" name="attr_spell_attack_bonus_bonus" value="0" style="width: 40px;"></label>
                     </div>
                 </div>
 
@@ -593,6 +595,7 @@
                         <option value="none">-- Select Cantrip to Add --</option>
                         <option value="fire_bolt">Fire Bolt</option>
                         <option value="mind_sliver">Mind Sliver</option>
+                        <option value="sneak_attack">Sneak Attack</option>
                         <option value="toll_the_dead">Toll the Dead</option>
                     </select>
                     <button type="action" name="act_add_cantrip" class="sheet-btn-add" title="Add Cantrip">+</button>
@@ -759,7 +762,7 @@
     // Also triggers AC, attunement, and materia calc.
     // ----------------------------------------------------
     on("sheet:opened", function() {
-        getAttrs(["level", "xp", "pb", "dexterity", "initiative_bonus", "spellcasting_ability", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(values) {
+        getAttrs(["level", "xp", "pb", "dexterity", "initiative_bonus", "spellcasting_ability", "intelligence_mod", "wisdom_mod", "charisma_mod", "spell_save_dc_bonus", "spell_attack_bonus_bonus"], function(values) {
             let level = parseInt(values.level, 10) || 1;
             let xp = parseInt(values.xp, 10) || 0;
             let dex = parseInt(values.dexterity, 10) || 10;
@@ -782,14 +785,17 @@
                 spellMod = parseInt(values[selectedAbility + "_mod"], 10) || 0;
             }
 
+            let dcBonus = parseInt(values.spell_save_dc_bonus, 10) || 0;
+            let atkBonus = parseInt(values.spell_attack_bonus_bonus, 10) || 0;
+
             setAttrs({
                 "pb": newPb,
                 "level_up_alert": levelUpFlag,
                 "dexterity_mod": dexMod,
                 "initiative": dexMod + (parseInt(values.initiative_bonus, 10) || 0),
                 "spell_mod": spellMod,
-                "spell_save_dc": 8 + newPb + spellMod,
-                "spell_attack_bonus": newPb + spellMod
+                "spell_save_dc": 8 + newPb + spellMod + dcBonus,
+                "spell_attack_bonus": newPb + spellMod + atkBonus
             });
             calculateAC();
             updateAttunement();
@@ -1060,10 +1066,12 @@
     // ----------------------------------------------------
     // Spellcasting Auto-calculations
     // ----------------------------------------------------
-    on("change:spellcasting_ability change:pb change:intelligence_mod change:wisdom_mod change:charisma_mod", function() {
-        getAttrs(["spellcasting_ability", "pb", "intelligence_mod", "wisdom_mod", "charisma_mod"], function(values) {
+    on("change:spellcasting_ability change:intelligence_mod change:wisdom_mod change:charisma_mod change:spell_save_dc_bonus change:spell_attack_bonus_bonus change:pb", function() {
+        getAttrs(["spellcasting_ability", "pb", "intelligence_mod", "wisdom_mod", "charisma_mod", "spell_save_dc_bonus", "spell_attack_bonus_bonus"], function(values) {
             let selectedAbility = values.spellcasting_ability || "none";
             let pb = parseInt(values.pb, 10) || 2;
+            let dcBonus = parseInt(values.spell_save_dc_bonus, 10) || 0;
+            let atkBonus = parseInt(values.spell_attack_bonus_bonus, 10) || 0;
             
             // Look up the modifier from the selected ability key
             let spellMod = 0;
@@ -1073,8 +1081,8 @@
             
             setAttrs({
                 "spell_mod": spellMod,
-                "spell_save_dc": 8 + pb + spellMod,
-                "spell_attack_bonus": pb + spellMod
+                "spell_save_dc": 8 + pb + spellMod + dcBonus,
+                "spell_attack_bonus": pb + spellMod + atkBonus
             });
         });
     });
@@ -1471,6 +1479,11 @@
             name: "Toll the Dead",
             effect: "You point at one creature within 60 ft, and the sound of a dolorous bell fills the air. The target must succeed on a Wisdom saving throw (DC @{spell_save_dc}) or take Necrotic damage. If the target is missing any of its Hit Points, the damage uses d12s instead of d8s.",
             formula: "&{template:default} {{name=@{character_name} casts Toll the Dead}} {{Save=Wisdom DC @{spell_save_dc}}} {{Damage (Healthy)=[[ [[ceil((@{level} + 2) / 6)]]d8 ]] Necrotic}} {{Damage (Injured)=[[ [[ceil((@{level} + 2) / 6)]]d12 ]] Necrotic}}"
+        },
+        "sneak_attack": {
+            name: "Sneak Attack",
+            effect: "Adds +1d6 additional damage for surprise or stealth attacks, or if a companion is nearby (within 5ft of target).",
+            formula: "&{template:default} {{name=@{character_name} uses Sneak Attack}} {{Damage=[[1d6]]}}"
         }
     };
 

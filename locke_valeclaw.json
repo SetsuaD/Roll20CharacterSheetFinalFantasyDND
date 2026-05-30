@@ -74,5 +74,8 @@
   "repeating_inventory_-i000000000000000007_item_qty": 1,
   "repeating_inventory_-i000000000000000008_item_name": "Burglar's Pack",
   "repeating_inventory_-i000000000000000008_item_qty": 1,
-  "repeating_inventory_-i000000000000000008_item_desc": "Contains: backpack, ball bearings (1,000), string (10 ft), bell, 5 candles, crowbar, hammer, 10 pitons, hooded lantern, 2 oil flasks, 5 days rations, tinderbox, waterskin, 50 ft rope."
+  "repeating_inventory_-i000000000000000008_item_desc": "Contains: backpack, ball bearings (1,000), string (10 ft), bell, 5 candles, crowbar, hammer, 10 pitons, hooded lantern, 2 oil flasks, 5 days rations, tinderbox, waterskin, 50 ft rope.",
+  "repeating_cantrips_-c000000000000000001_cantrip_name": "Sneak Attack",
+  "repeating_cantrips_-c000000000000000001_cantrip_effect": "Adds +1d6 additional damage for surprise or stealth attacks, or if a companion is nearby (within 5ft of target).",
+  "repeating_cantrips_-c000000000000000001_cantrip_roll_formula": "&{template:default} {{name=@{character_name} uses Sneak Attack}} {{Damage=[[1d6]] Additional Damage}}"
 }

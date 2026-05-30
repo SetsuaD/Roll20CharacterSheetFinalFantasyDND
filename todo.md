@@ -50,3 +50,6 @@
 - [x] 2026-05-24 17:58:00 - TASK: Add custom inline Action buttons (Trash Cans) to repeating Inventory, Weapons, and Armor rows using new removeRepeatingRow() API. COMPLETE 2026-05-24 17:59:00
 - [x] 2026-05-25 03:39:00 - TASK: Implement dynamic Cantrip dropdown selector that automatically populates repeating row with D&D 2024 spell descriptions and auto-scaling roll buttons (Fire Bolt, Mind Sliver, Toll the Dead). COMPLETE 2026-05-25 03:39:00
 - [x] 2026-05-25 03:39:00 - TASK: Update terra_figaro.json and cecil_highwind.json with D&D 2024 Shield and Magic Missile materia. COMPLETE 2026-05-25 03:39:00
+- [x] 2026-05-25 04:09:00 - TASK: Add Sneak Attack to Cantrip dropdown and update Locke's JSON to include it. COMPLETE 2026-05-25 04:10:00
+- [x] 2026-05-25 04:35:00 - TASK: Add Protect (Shield of Faith) and Healing (Healing Word) Materia to Lenna's JSON. COMPLETE 2026-05-25 04:36:00
+- [x] 2026-05-25 04:45:00 - TASK: Add override fields for spell_save_dc_bonus and spell_attack_bonus_bonus to boilerplate HTML, then update Lenna's JSON to give her a 16 Save DC (+4 bonus). COMPLETE 2026-05-25 04:46:00
