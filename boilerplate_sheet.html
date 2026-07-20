@@ -23,16 +23,36 @@
     <!-- ================================================ -->
     <!-- CHARACTER HEADER                                 -->
     <!-- ================================================ -->
-    <div class="sheet-header">
-        <h1>Character Sheet</h1>
-        <div class="sheet-header-details">
+    <div class="sheet-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <h1 style="margin-bottom: 0;">Character Sheet</h1>
+        <div class="sheet-save-container">
+            <input type="hidden" name="attr_save_status" class="sheet-save-status-toggle" value="0">
+            <span class="sheet-save-status">Saved!</span>
+            <button type="action" name="act_save_sheet" class="sheet-btn-save">Save Sheet</button>
+        </div>
+    </div>
+    <div class="sheet-header-details">
             <div class="sheet-input-group">
                 <label>Character Name</label>
                 <input type="text" name="attr_character_name" placeholder="Name">
             </div>
             <div class="sheet-input-group">
                 <label>Class</label>
-                <input type="text" name="attr_class" placeholder="e.g. Fighter">
+                <select name="attr_class" style="width: 140px; height: 28px; padding: 2px 4px; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-dark);">
+                    <option value="">Select Class...</option>
+                    <option value="Barbarian">Barbarian</option>
+                    <option value="Bard">Bard</option>
+                    <option value="Cleric">Cleric</option>
+                    <option value="Druid">Druid</option>
+                    <option value="Fighter">Fighter</option>
+                    <option value="Monk">Monk</option>
+                    <option value="Paladin">Paladin</option>
+                    <option value="Ranger">Ranger</option>
+                    <option value="Rogue">Rogue</option>
+                    <option value="Sorcerer">Sorcerer</option>
+                    <option value="Warlock">Warlock</option>
+                    <option value="Wizard">Wizard</option>
+                </select>
             </div>
             <div class="sheet-input-group" style="width: 60px; position: relative;">
                 <label>Level</label>
@@ -43,11 +63,40 @@
             </div>
             <div class="sheet-input-group">
                 <label>Race/Species</label>
-                <input type="text" name="attr_race" placeholder="e.g. Human">
+                <select name="attr_race" style="width: 120px; height: 28px; padding: 2px 4px; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-dark);">
+                    <option value="">Select Race...</option>
+                    <option value="Human">Human</option>
+                    <option value="Elf">Elf</option>
+                    <option value="Half-Elf">Half-Elf</option>
+                    <option value="Catfolk">Catfolk</option>
+                    <option value="Dwarf">Dwarf</option>
+                    <option value="Halfling">Halfling</option>
+                    <option value="Orc">Orc</option>
+                    <option value="Dragonborn">Dragonborn</option>
+                    <option value="Gnome">Gnome</option>
+                </select>
+                <input type="hidden" name="attr_human_stats_applied" value="0">
+                <input type="hidden" name="attr_elf_stats_applied" value="0">
+                <input type="hidden" name="attr_elf_perception_applied" value="0">
+                <input type="hidden" name="attr_half_elf_stats_applied" value="0">
+                <input type="hidden" name="attr_catfolk_perception_applied" value="0">
+                <input type="hidden" name="attr_catfolk_stealth_applied" value="0">
             </div>
             <div class="sheet-input-group">
                 <label>Alignment</label>
-                <input type="text" name="attr_alignment" placeholder="e.g. Neutral Good">
+                <select name="attr_alignment" style="width: 130px; height: 28px; padding: 2px 4px; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-dark);">
+                    <option value="">Select...</option>
+                    <option value="Lawful Good">Lawful Good</option>
+                    <option value="Neutral Good">Neutral Good</option>
+                    <option value="Chaotic Good">Chaotic Good</option>
+                    <option value="Lawful Neutral">Lawful Neutral</option>
+                    <option value="True Neutral">True Neutral</option>
+                    <option value="Chaotic Neutral">Chaotic Neutral</option>
+                    <option value="Lawful Evil">Lawful Evil</option>
+                    <option value="Neutral Evil">Neutral Evil</option>
+                    <option value="Chaotic Evil">Chaotic Evil</option>
+                    <option value="Unaligned">Unaligned</option>
+                </select>
             </div>
             <div class="sheet-input-group" style="width: 80px;">
                 <label>XP</label>
@@ -80,6 +129,7 @@
                             <input type="number" name="attr_passive_perception" value="10">
                             <button type="action" name="act_pp_up" class="sheet-pp-arrow">&#9650;</button>
                         </div>
+                        <button type="roll" name="roll_perception_top" value="&amp;{template:default} {{name=@{character_name} - Perception Check}} {{Roll=[[1d20 + @{perception}]]}}" class="sheet-pp-roll-btn">Roll</button>
                     </div>
                     <div class="sheet-stat-bubble">
                         <label>Speed</label>
@@ -87,7 +137,14 @@
                     </div>
                     <div class="sheet-stat-bubble">
                         <label>Size</label>
-                        <input type="text" name="attr_size" value="Medium">
+                        <select name="attr_size" style="width: 100%; height: 26px; font-size: 0.85em; padding: 2px; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-dark); text-align: center;">
+                            <option value="Tiny">Tiny</option>
+                            <option value="Small">Small</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Large">Large</option>
+                            <option value="Huge">Huge</option>
+                            <option value="Gargantuan">Gargantuan</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -267,7 +324,7 @@
                             <input type="checkbox" name="attr_perception_mastery" value="1" title="Mastery (Expertise)" class="sheet-mastery-checkbox">
                             <span class="sheet-skill-name">Perception</span>
                             <input type="number" name="attr_perception" value="0" readonly class="sheet-skill-val">
-                            <button type="roll" name="roll_perception" value="/roll 1d20 + @{perception}"></button>
+                            <button type="roll" name="roll_perception" value="&amp;{template:default} {{name=@{character_name} - Perception Check}} {{Roll=[[1d20 + @{perception}]]}}"></button>
                         </div>
                         <div class="sheet-skill-row">
                             <input type="checkbox" name="attr_survival_prof" value="1" title="Proficiency">
@@ -339,7 +396,7 @@
                 <div class="sheet-stat-row">
                     <div class="sheet-stat-bubble sheet-stat-bubble-gold">
                         <label>Gold (GP)</label>
-                        <input type="number" name="attr_gp" value="0">
+                        <input type="number" name="attr_gp" value="0" step="any">
                     </div>
                 </div>
                 <h3 class="sheet-sub-header">Items</h3>
@@ -351,7 +408,7 @@
                         </div>
                         <div class="sheet-small-inputs">
                             <label>Qty <input type="number" name="attr_item_qty" value="1"></label>
-                            <label>Weight <input type="number" name="attr_item_weight" value="0"></label>
+                            <label>Weight <input type="number" name="attr_item_weight" value="0" step="any"></label>
                         </div>
                         <textarea name="attr_item_desc" placeholder="Description..."></textarea>
                     </div>
@@ -484,7 +541,7 @@
                             <label>Damage <input type="text" name="attr_weapon_damage" placeholder="1d8+3" readonly style="width: 80px; font-weight: 700;"></label>
                         </div>
                         <textarea name="attr_weapon_desc" placeholder="Weapon description/properties..."></textarea>
-                        <button type="roll" name="roll_attack" value="&amp;{template:default} {{name=@{weapon_name}}} {{Attack=[[1d20+@{weapon_attack}]]}} {{Damage=[[@{weapon_damage}]]}}">Attack</button>
+                        <button type="roll" name="roll_attack" value="&amp;{template:default} {{name=@{character_name} - @{weapon_name}}} {{Attack=[[1d20+@{weapon_attack}]]}} {{Damage=[[@{weapon_damage}]]}}">Attack</button>
                     </div>
                 </fieldset>
             </div>
@@ -513,7 +570,41 @@
                 </div>
                 <div class="sheet-input-group">
                     <label>Languages</label>
-                    <textarea name="attr_languages" placeholder="e.g. Common, Elvish..."></textarea>
+                    <div style="font-size: 0.85em; font-weight: 600; margin-bottom: 6px; padding: 4px 6px; background: rgba(0,0,0,0.02); border-radius: 4px; border: 1px solid var(--color-border);">
+                        Base: <span name="attr_auto_languages">Common</span>
+                        <input type="hidden" name="attr_auto_languages" value="Common">
+                    </div>
+                    
+                    <fieldset class="repeating_languages">
+                        <div class="sheet-language-row" style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px; position: relative;">
+                            <select name="attr_language_name" class="sheet-language-select" style="flex: 1; height: 26px; padding: 2px 4px; font-size: 0.85em; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-dark);">
+                                <option value="" disabled selected>-- Choose Language --</option>
+                                <optgroup label="Standard Languages">
+                                    <option value="Dwarvish">Dwarvish</option>
+                                    <option value="Elvish">Elvish</option>
+                                    <option value="Giant">Giant</option>
+                                    <option value="Gnomish">Gnomish</option>
+                                    <option value="Goblin">Goblin</option>
+                                    <option value="Halfling">Halfling</option>
+                                    <option value="Orc">Orc</option>
+                                </optgroup>
+                                <optgroup label="Exotic Languages">
+                                    <option value="Abyssal">Abyssal</option>
+                                    <option value="Celestial">Celestial</option>
+                                    <option value="Draconic">Draconic</option>
+                                    <option value="Deep Speech">Deep Speech</option>
+                                    <option value="Infernal">Infernal</option>
+                                    <option value="Primordial">Primordial</option>
+                                    <option value="Sylvan">Sylvan</option>
+                                    <option value="Undercommon">Undercommon</option>
+                                </optgroup>
+                                <option value="Custom">Other (Custom)</option>
+                            </select>
+                            <input type="hidden" name="attr_language_custom_toggle" class="sheet-language-custom-toggle" value="0">
+                            <input type="text" name="attr_custom_language" class="sheet-custom-language-input" placeholder="Enter language..." style="flex: 1; height: 26px; padding: 2px 6px; font-size: 0.85em; border-radius: 4px; border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-dark); box-sizing: border-box;">
+                            <button type="action" name="act_delete" class="sheet-btn-trash" style="padding: 2px 6px; font-size: 0.9em; height: 26px; line-height: 1; margin: 0;" title="Remove Language">&#10006;</button>
+                        </div>
+                    </fieldset>
                 </div>
             </div>
 
@@ -824,6 +915,241 @@
             setAttrs({
                 "pb": newPb,
                 "level_up_alert": levelUpFlag
+            });
+        });
+    });
+
+    // ----------------------------------------------------
+    // Race-Based Species Traits, Ability Adjustment, & Languages
+    // ----------------------------------------------------
+    on("change:race", function() {
+        getAttrs([
+            "race",
+            "strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma",
+            "human_stats_applied",
+            "elf_stats_applied", "elf_perception_applied",
+            "half_elf_stats_applied",
+            "catfolk_perception_applied", "catfolk_stealth_applied",
+            "perception_prof", "stealth_prof"
+        ], function(values) {
+            let race = (values.race || "").trim().toLowerCase();
+            
+            // 1. Classify the race/species
+            let isHuman = (race === "human");
+            let isHalfElf = (race.indexOf("half-elf") !== -1 || race.indexOf("half elf") !== -1);
+            let isElf = (race.indexOf("elf") !== -1 || race.indexOf("elv") !== -1 || race.indexOf("drow") !== -1) && !isHalfElf;
+            let isCatfolk = (race.indexOf("cat") !== -1 || race.indexOf("tabaxi") !== -1);
+            
+            // 2. Fetch current applied states
+            let appliedHumanStats = parseInt(values.human_stats_applied, 10) || 0;
+            let appliedElfStats = parseInt(values.elf_stats_applied, 10) || 0;
+            let appliedElfPerception = parseInt(values.elf_perception_applied, 10) || 0;
+            let appliedHalfElfStats = parseInt(values.half_elf_stats_applied, 10) || 0;
+            let appliedCatfolkPerception = parseInt(values.catfolk_perception_applied, 10) || 0;
+            let appliedCatfolkStealth = parseInt(values.catfolk_stealth_applied, 10) || 0;
+            
+            // 3. Fetch current stats
+            let strength = parseInt(values.strength, 10) || 10;
+            let dexterity = parseInt(values.dexterity, 10) || 10;
+            let constitution = parseInt(values.constitution, 10) || 10;
+            let intelligence = parseInt(values.intelligence, 10) || 10;
+            let wisdom = parseInt(values.wisdom, 10) || 10;
+            let charisma = parseInt(values.charisma, 10) || 10;
+            
+            // 4. Fetch current proficiencies
+            let perceptionProf = parseInt(values.perception_prof, 10) || 0;
+            let stealthProf = parseInt(values.stealth_prof, 10) || 0;
+            
+            let updateObj = {};
+            
+            // 5. Calculate auto languages based on race classification
+            let autoLang = "Common";
+            if (race) {
+                if (isHuman) {
+                    autoLang = "Common";
+                } else if (isElf || isHalfElf) {
+                    autoLang = "Common, Elvish";
+                } else if (isCatfolk) {
+                    autoLang = "Common, Catfolk";
+                } else if (race.indexOf("dwarf") !== -1 || race.indexOf("dwarv") !== -1) {
+                    autoLang = "Common, Dwarvish";
+                } else if (race.indexOf("halfling") !== -1) {
+                    autoLang = "Common, Halfling";
+                } else if (race.indexOf("orc") !== -1) {
+                    autoLang = "Common, Orc";
+                } else if (race.indexOf("dragon") !== -1 || race.indexOf("drac") !== -1) {
+                    autoLang = "Common, Draconic";
+                } else {
+                    let capRace = values.race.trim().charAt(0).toUpperCase() + values.race.trim().slice(1);
+                    autoLang = "Common, " + capRace + " Language";
+                }
+            }
+            updateObj["auto_languages"] = autoLang;
+            
+            // 6. Revert previous stat and skill changes if changing away
+            // Revert Human stats
+            if (!isHuman && appliedHumanStats === 1) {
+                strength = Math.max(1, strength - 1);
+                dexterity = Math.max(1, dexterity - 1);
+                constitution = Math.max(1, constitution - 1);
+                intelligence = Math.max(1, intelligence - 1);
+                wisdom = Math.max(1, wisdom - 1);
+                charisma = Math.max(1, charisma - 1);
+                updateObj["human_stats_applied"] = 0;
+            }
+            
+            // Revert Elf stats
+            if (!isElf && appliedElfStats === 1) {
+                dexterity = Math.max(1, dexterity - 2);
+                updateObj["elf_stats_applied"] = 0;
+            }
+            
+            // Revert Elf skill proficiency (Perception)
+            if (!isElf && appliedElfPerception === 1) {
+                perceptionProf = 0;
+                updateObj["elf_perception_applied"] = 0;
+            }
+            
+            // Revert Half-Elf stats
+            if (!isHalfElf && appliedHalfElfStats === 1) {
+                charisma = Math.max(1, charisma - 2);
+                updateObj["half_elf_stats_applied"] = 0;
+            }
+            
+            // Revert Catfolk skill proficiencies (Perception & Stealth)
+            if (!isCatfolk) {
+                if (appliedCatfolkPerception === 1) {
+                    perceptionProf = 0;
+                    updateObj["catfolk_perception_applied"] = 0;
+                }
+                if (appliedCatfolkStealth === 1) {
+                    stealthProf = 0;
+                    updateObj["catfolk_stealth_applied"] = 0;
+                }
+            }
+            
+            // 7. Apply new stat and skill changes
+            // Apply Human stats
+            if (isHuman && appliedHumanStats === 0) {
+                strength += 1;
+                dexterity += 1;
+                constitution += 1;
+                intelligence += 1;
+                wisdom += 1;
+                charisma += 1;
+                updateObj["human_stats_applied"] = 1;
+            }
+            
+            // Apply Elf stats
+            if (isElf && appliedElfStats === 0) {
+                dexterity += 2;
+                updateObj["elf_stats_applied"] = 1;
+            }
+            
+            // Apply Elf skill proficiency (Perception)
+            if (isElf && appliedElfPerception === 0) {
+                if (perceptionProf === 0) {
+                    perceptionProf = 1;
+                    updateObj["elf_perception_applied"] = 1;
+                }
+            }
+            
+            // Apply Half-Elf stats
+            if (isHalfElf && appliedHalfElfStats === 0) {
+                charisma += 2;
+                updateObj["half_elf_stats_applied"] = 1;
+            }
+            
+            // Apply Catfolk skill proficiencies (Perception & Stealth)
+            if (isCatfolk) {
+                if (appliedCatfolkPerception === 0 && perceptionProf === 0) {
+                    perceptionProf = 1;
+                    updateObj["catfolk_perception_applied"] = 1;
+                }
+                if (appliedCatfolkStealth === 0 && stealthProf === 0) {
+                    stealthProf = 1;
+                    updateObj["catfolk_stealth_applied"] = 1;
+                }
+            }
+            
+            // Assign calculated stats/skills back to update object
+            updateObj["strength"] = strength;
+            updateObj["dexterity"] = dexterity;
+            updateObj["constitution"] = constitution;
+            updateObj["intelligence"] = intelligence;
+            updateObj["wisdom"] = wisdom;
+            updateObj["charisma"] = charisma;
+            updateObj["perception_prof"] = perceptionProf;
+            updateObj["stealth_prof"] = stealthProf;
+            
+            // 8. Update repeating species traits list
+            getSectionIDs("repeating_speciestraits", function(idArray) {
+                let toRemove = [];
+                let hasHuman = false;
+                let hasElf = false;
+                let hasHalfElf = false;
+                let hasCatfolk = false;
+                
+                // Helper function to handle trailing actions and setAttrs
+                let finalizeSheet = function() {
+                    toRemove.forEach(id => {
+                        removeRepeatingRow(`repeating_speciestraits_${id}`);
+                    });
+                    
+                    if (isHuman && !hasHuman) {
+                        let newId = generateRowID();
+                        updateObj[`repeating_speciestraits_${newId}_trait_name`] = "Human Traits";
+                        updateObj[`repeating_speciestraits_${newId}_trait_desc`] = "Ability Score Increase: Your ability scores each increase by 1 (applied). Age: Adulthood in late teens, live less than a century. Size: Medium. Speed: 30 ft. Languages: Common and one extra language of your choice.";
+                    }
+                    if (isElf && !hasElf) {
+                        let newId = generateRowID();
+                        updateObj[`repeating_speciestraits_${newId}_trait_name`] = "Elf Traits";
+                        updateObj[`repeating_speciestraits_${newId}_trait_desc`] = "Dexterity score increases by 2 (applied). Age: Adulthood at 100, live up to 750. Size: Medium. Speed: 30 ft. Darkvision: 60 ft. Fey Ancestry: Advantage against being charmed, immune to sleep magic. Trance: Meditate deeply for 4 hours instead of sleeping. Keen Senses: Proficiency in Perception (applied). Languages: Common and Elven.";
+                    }
+                    if (isHalfElf && !hasHalfElf) {
+                        let newId = generateRowID();
+                        updateObj[`repeating_speciestraits_${newId}_trait_name`] = "Half-Elf Traits";
+                        updateObj[`repeating_speciestraits_${newId}_trait_desc`] = "Charisma score increases by 2 (applied), two other ability scores increase by 1. Age: Adulthood at 20, live over 180. Size: Medium. Speed: 30 ft. Darkvision: 60 ft. Fey Ancestry: Advantage against being charmed, immune to sleep magic. Languages: Common, Elven, plus one choice. Half-Elf Versatility (choose Skill Versatility, Elf Weapon Training, Cantrip, Fleet of Foot, Mask of the Wild, Drow Magic, or Swim Speed).";
+                    }
+                    if (isCatfolk && !hasCatfolk) {
+                        let newId = generateRowID();
+                        updateObj[`repeating_speciestraits_${newId}_trait_name`] = "Catfolk Traits";
+                        updateObj[`repeating_speciestraits_${newId}_trait_desc`] = "Ability Score Increase: Choose one +2 and one +1, or three +1. Size: Medium or Small. Speed: 30 ft walking, climbing speed 30 ft. Cat's Claws: Unarmed strikes deal 1d6 + STR modifier slashing damage. Cat's Talent: Proficiency in Perception and Stealth (applied). Darkvision: 60 ft. Feline Agility: Double your speed in combat until end of turn. Languages: Common and one choice.";
+                    }
+                    
+                    setAttrs(updateObj);
+                };
+                
+                if (idArray.length === 0) {
+                    finalizeSheet();
+                    return;
+                }
+                
+                let fieldNames = [];
+                idArray.forEach(id => {
+                    fieldNames.push(`repeating_speciestraits_${id}_trait_name`);
+                });
+                
+                getAttrs(fieldNames, function(traitVals) {
+                    idArray.forEach(id => {
+                        let name = (traitVals[`repeating_speciestraits_${id}_trait_name`] || "").trim().toLowerCase();
+                        if (name.indexOf("human") !== -1) {
+                            if (isHuman) hasHuman = true;
+                            else toRemove.push(id);
+                        } else if (name.indexOf("half-elf") !== -1 || name.indexOf("half elf") !== -1) {
+                            if (isHalfElf) hasHalfElf = true;
+                            else toRemove.push(id);
+                        } else if (name.indexOf("elf") !== -1) {
+                            if (isElf) hasElf = true;
+                            else toRemove.push(id);
+                        } else if (name.indexOf("catfolk") !== -1 || name.indexOf("cat's") !== -1 || name.indexOf("cat ") !== -1) {
+                            if (isCatfolk) hasCatfolk = true;
+                            else toRemove.push(id);
+                        }
+                    });
+                    
+                    finalizeSheet();
+                });
             });
         });
     });
@@ -1448,17 +1774,51 @@
     });
 
     // ----------------------------------------------------
-    // Custom Trash Can Delete Buttons
+    // Save Sheet Button Handler
     // ----------------------------------------------------
-    const sectionsWithDelete = ["inventory", "weapons", "armor", "cantrips"];
-    sectionsWithDelete.forEach(function(section) {
-        on("clicked:repeating_" + section + ":delete", function(eventInfo) {
-            var attrName = eventInfo.sourceAttribute;
-            if (attrName) {
-                var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
-                removeRepeatingRow(rowPrefix);
-            }
+    on("clicked:save_sheet", function() {
+        setAttrs({ "save_status": "1" }, {}, function() {
+            setAttrs({ "save_status": "0" });
         });
+    });
+
+    // ----------------------------------------------------
+    // Custom Trash Can Delete Buttons (Static Binding)
+    // ----------------------------------------------------
+    on("clicked:repeating_inventory:delete", function(eventInfo) {
+        var attrName = eventInfo.sourceAttribute;
+        if (attrName) {
+            var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
+            removeRepeatingRow(rowPrefix);
+        }
+    });
+    on("clicked:repeating_weapons:delete", function(eventInfo) {
+        var attrName = eventInfo.sourceAttribute;
+        if (attrName) {
+            var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
+            removeRepeatingRow(rowPrefix);
+        }
+    });
+    on("clicked:repeating_armor:delete", function(eventInfo) {
+        var attrName = eventInfo.sourceAttribute;
+        if (attrName) {
+            var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
+            removeRepeatingRow(rowPrefix);
+        }
+    });
+    on("clicked:repeating_cantrips:delete", function(eventInfo) {
+        var attrName = eventInfo.sourceAttribute;
+        if (attrName) {
+            var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
+            removeRepeatingRow(rowPrefix);
+        }
+    });
+    on("clicked:repeating_languages:delete", function(eventInfo) {
+        var attrName = eventInfo.sourceAttribute;
+        if (attrName) {
+            var rowPrefix = attrName.substring(0, attrName.lastIndexOf('_'));
+            removeRepeatingRow(rowPrefix);
+        }
     });
 
     // ----------------------------------------------------
@@ -1504,6 +1864,20 @@
             // Reset dropdown
             update["cantrip_selector"] = "none";
 
+            setAttrs(update);
+        });
+    });
+
+    // ----------------------------------------------------
+    // Repeating Languages Custom Option Toggle
+    // ----------------------------------------------------
+    on("change:repeating_languages:language_name", function(eventInfo) {
+        let attrName = eventInfo.sourceAttribute;
+        getAttrs([attrName], function(values) {
+            let val = values[attrName] || "";
+            let rowPrefix = attrName.substring(0, attrName.lastIndexOf('_') + 1);
+            let update = {};
+            update[rowPrefix + "language_custom_toggle"] = (val === "Custom") ? "1" : "0";
             setAttrs(update);
         });
     });

@@ -570,6 +570,15 @@
     border-color: var(--color-red);
 }
 
+.sheet-pp-roll-btn {
+    margin-top: 6px !important;
+    padding: 2px 8px !important;
+    font-size: 0.7em !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* ================================================ */
 /* Death Saves                                      */
 /* ================================================ */
@@ -635,6 +644,11 @@
     position: relative;
     overflow: visible;
     margin-bottom: 4px;
+    transition: padding 0.15s ease;
+}
+
+.sheet-main-container .repcontainer.editmode .repitem {
+    padding-top: 30px !important;
 }
 
 .sheet-main-container .repcontainer .repitem .itemcontrol {
@@ -642,8 +656,12 @@
     top: 2px;
     right: 2px;
     z-index: 100;
-    display: flex;
+    display: none;
     gap: 2px;
+}
+
+.sheet-main-container .repcontainer.editmode .repitem .itemcontrol {
+    display: flex;
 }
 
 .sheet-main-container .repcontainer .repitem .itemcontrol .repcontrol_del,
@@ -821,3 +839,57 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* Custom language field visibility toggle */
+.sheet-custom-language-input {
+    display: none;
+}
+
+.sheet-language-custom-toggle[value="1"] ~ .sheet-custom-language-input {
+    display: inline-block !important;
+}
+
+/* ================================================ */
+/* Save Button & Status                             */
+/* ================================================ */
+.sheet-save-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sheet-btn-save {
+    background-color: var(--color-red) !important;
+    color: var(--color-white) !important;
+    border: none !important;
+    padding: 6px 14px !important;
+    border-radius: var(--radius) !important;
+    font-weight: 700 !important;
+    font-size: 0.9em !important;
+    cursor: pointer !important;
+    transition: background-color 0.2s ease, transform 0.1s ease !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+}
+
+.sheet-btn-save:hover {
+    background-color: #8c0c16 !important;
+    transform: translateY(-1px) !important;
+}
+
+.sheet-btn-save:active {
+    transform: translateY(1px) !important;
+}
+
+.sheet-save-status {
+    font-size: 0.9em;
+    font-weight: 700;
+    color: #2e7d32;
+    opacity: 0;
+    transition: opacity 2.5s ease-out;
+}
+
+.sheet-save-status-toggle[value="1"] ~ .sheet-save-status {
+    opacity: 1;
+    transition: opacity 0s;
+}
+

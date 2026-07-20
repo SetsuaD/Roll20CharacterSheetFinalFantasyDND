@@ -53,3 +53,18 @@
 - [x] 2026-05-25 04:09:00 - TASK: Add Sneak Attack to Cantrip dropdown and update Locke's JSON to include it. COMPLETE 2026-05-25 04:10:00
 - [x] 2026-05-25 04:35:00 - TASK: Add Protect (Shield of Faith) and Healing (Healing Word) Materia to Lenna's JSON. COMPLETE 2026-05-25 04:36:00
 - [x] 2026-05-25 04:45:00 - TASK: Add override fields for spell_save_dc_bonus and spell_attack_bonus_bonus to boilerplate HTML, then update Lenna's JSON to give her a 16 Save DC (+4 bonus). COMPLETE 2026-05-25 04:46:00
+- [x] 2026-06-20 19:27:00 - TASK: Distribute Citadel hallway combat loot. Added 500 XP to all party members. Distributed 30 GP evenly (7.5 GP each). Gave Pendant to Lenna, Antidote to Terra, Rations and Javelins to Cecil, and Magic Missile Materia to Locke. COMPLETE 2026-06-20 19:27:00
+- [x] 2026-06-20 19:46:00 - TASK: Add Perception roll button to Passive Perception bubble and style it, and update the Perception skill roll button to use the default roll template so it posts correctly to chat. COMPLETE 2026-06-20 19:47:00
+- [x] 2026-06-20 20:04:00 - TASK: Update Terra Figaro's Limit Break to Arcane Ascension with scaling rules from Level 3 to 20 in terra_figaro.json. COMPLETE 2026-06-20 20:05:00
+- [x] 2026-06-20 20:08:00 - TASK: Fix repeating sections delete bug in boilerplate_sheet.css by preventing itemcontrol overlay click capture. Add automatic Human species trait handler in boilerplate_sheet.html to auto-increment stats +1 and insert "Human Traits" description in species traits field when race is "Human". COMPLETE 2026-06-20 20:09:00
+- [x] 2026-06-20 20:14:00 - TASK: Replace languages textarea with structured repeating languages UI including base race languages auto-calculation ("auto_languages") and manually added languages using select dropdown + custom option + custom delete/trash button. COMPLETE 2026-06-20 20:15:00
+- [x] 2026-06-20 20:25:00 - TASK: Implement automated race/species rules for Elf (+2 Dex, Perception proficiency, Elf Traits), Half-Elf (+2 Cha, Half-Elf Traits), and Catfolk (Perception + Stealth proficiency, Catfolk Traits) with reversion logic when race changes. Added hidden state-tracking inputs to boilerplate HTML. Verified correct transition behavior via Node.js test script. COMPLETE 2026-06-20 20:26:00
+- [x] 2026-06-20 20:45:00 - TASK: Replace Class, Race/Species, Alignment, and Size text inputs with standard D&D 5e select dropdowns to make sheet editing faster and fully selectable. Verified sheet worker events trigger correctly when dropdown selections change. COMPLETE 2026-06-20 20:46:00
+
+- [x] 2026-06-20 20:54:00 - TASK: Add "Save Sheet" action button to the sheet header with status message fading out via CSS transitions. COMPLETE 2026-06-20 20:55:00
+- [x] 2026-06-20 20:54:00 - TASK: Fix gold input field and item weight field HTML5 step-validation bug by adding step="any". COMPLETE 2026-06-20 20:55:00
+- [x] 2026-06-20 20:54:00 - TASK: Fix repeating section delete buttons by refactoring dynamic click listeners to static listeners in boilerplate_sheet.html. COMPLETE 2026-06-20 20:55:00
+- [x] 2026-06-20 20:54:00 - TASK: Add default placeholder choice option to repeating languages select dropdown. COMPLETE 2026-06-20 20:55:00
+- [x] 2026-06-20 21:30:00 - TASK: Prefix weapon roll templates with character_name in boilerplate_sheet.html so character names appear on attacks in chat. COMPLETE 2026-06-20 21:31:00
+
+
